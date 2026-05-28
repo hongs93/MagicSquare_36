@@ -1,0 +1,21 @@
+---
+description: Python 코드 스타일 규칙 (PEP8, 타입힌트, docstring)
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# MagicSquare Python Code Style
+
+## code_style
+- python_version: "3.10+"
+- style_guide: PEP8 엄격 준수
+- type_hints: 모든 함수 파라미터와 반환값에 필수
+- docstring: Google 스타일, 모든 public 메서드에 필수
+- max_line_length: 88 (Black 기준)
+
+## additional_rules
+- import_order: 표준 라이브러리 → 서드파티 → 로컬 패키지
+- naming:
+  - functions_variables_modules: snake_case
+  - classes: PascalCase
+  - constants: UPPER_SNAKE_CASE
