@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from entity.constants import (
     BLANK_VALUE,
-    GRID_SIZE,
     REQUIRED_BLANK_COUNT,
     VALUE_MAX,
     VALUE_MIN,
 )
+from entity.grid_validation import is_valid_grid_size
 
 from boundary.schemas import (
     DUPLICATE_NONZERO_CODE,
@@ -26,7 +26,11 @@ from boundary.schemas import (
 
 
 class InputValidator:
-    """Validates external grid input before Control/Domain processing."""
+    """Validates external grid input before Control/Domain processing.
+
+    Boundary layer: FR-01 input contract. Control entry is
+    ``UIBoundary.solve`` — see ``docs/architecture_stacks.md``.
+    """
 
     def validate(self, grid: list[list[int]] | None) -> FailureResponse | None:
         """Validate grid input and return a failure envelope when invalid.
@@ -46,7 +50,7 @@ class InputValidator:
                 message=NULL_INPUT_MESSAGE,
             )
 
-        if not grid or len(grid) != GRID_SIZE or any(len(row) != GRID_SIZE for row in grid):
+        if not is_valid_grid_size(grid):
             return FailureResponse(
                 code=INVALID_SIZE_CODE,
                 message=INVALID_SIZE_MESSAGE,

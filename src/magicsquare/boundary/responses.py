@@ -20,3 +20,6 @@ class FailureResult:
     code: str
     message: str
     is_failure: bool = True
+
+
+HandleResult = FailureResult

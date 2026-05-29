@@ -545,10 +545,10 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 4. 코드 중복 (Duplication)
 
-- [ ] **R-01** `_invalid_size_failure()` 미추출 — `validator.py` 동일 `FailureResult` 생성 2회 → private 헬퍼 추출
-- [ ] **R-02** 4×4 차원 검증 로직 중복 — `BoundaryValidator` ↔ `InputValidator` → 공통 `is_valid_grid_size()` 추출
-- [ ] **R-03** size-invalid early return 패턴 — ECB `FailureResult` vs Dual-Track `FailureResponse` → 공통 size 검사 후 envelope 매핑
-- [ ] **R-04** `BoundaryValidator()` 반복 생성 — 테스트·`Solver`에서 매번 `new` → DI 또는 fixture 공유
+- [x] **R-01** `_invalid_size_failure()` 미추출 — `validator.py` 동일 `FailureResult` 생성 2회 → private 헬퍼 추출
+- [x] **R-02** 4×4 차원 검증 로직 중복 — `BoundaryValidator` ↔ `InputValidator` → 공통 `is_valid_grid_size()` 추출
+- [x] **R-03** size-invalid early return 패턴 — ECB `FailureResult` vs Dual-Track `FailureResponse` → 공통 size 검사 후 envelope 매핑
+- [x] **R-04** `BoundaryValidator()` 반복 생성 — 테스트·`Solver`에서 매번 `new` → DI 또는 fixture 공유
 
 ### 5. 타입·계약 (Type / Contract)
 
@@ -597,3 +597,5 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 | 1.3 | 2026-05-29 | REFACTOR 단계 To-Do 8그룹(A~N) 체크리스트 추가 |
 | 1.4 | 2026-05-29 | REFACTOR 1번 그룹(A-01~A-06) — architecture doc, validate_size, dualtrack tests |
 | 1.5 | 2026-05-29 | REFACTOR 2번 그룹(D-01~D-03) — rules SSOT, pydantic runtime, coverage |
+| 1.6 | 2026-05-29 | REFACTOR 3번 그룹(C-01~C-04) — entity.oracles SSOT, error_contracts |
+| 1.7 | 2026-05-29 | REFACTOR 4번 그룹(R-01~R-04) — grid_validation, helpers, Solver DI |

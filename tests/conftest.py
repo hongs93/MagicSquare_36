@@ -15,6 +15,22 @@ while _SRC in sys.path:
 sys.path.insert(0, _SRC)
 
 
+from magicsquare.boundary.validator import BoundaryValidator
+from magicsquare.control.solver import Solver
+
+
+@pytest.fixture
+def boundary_validator() -> BoundaryValidator:
+    """Shared ECB BoundaryValidator for unit tests (R-04)."""
+    return BoundaryValidator()
+
+
+@pytest.fixture
+def solver() -> Solver:
+    """Shared ECB Solver with default validator (R-04, I-01)."""
+    return Solver()
+
+
 @pytest.fixture
 def grid_3x4() -> list[list[int]]:
     """3×4 matrix — size-invalid only; cell values are in range."""

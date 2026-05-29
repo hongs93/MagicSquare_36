@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from magicsquare.boundary.responses import FailureResult
+from magicsquare.boundary.responses import FailureResult, HandleResult
 from magicsquare.boundary.validator import BoundaryValidator
 
 
@@ -12,13 +12,20 @@ class Solver:
     ECB Training Stack Control (AC-FR-01-01, AC-FR-01-05). Dual-Track
     production counterpart: ``control.SolvePartialMagicSquare`` (FR-05).
     See ``docs/architecture_stacks.md`` §3.
+
+    Control layer: orchestrates Boundary validation then domain ``resolve``.
+    Does not implement domain rules directly.
     """
 
-    def __init__(self) -> None:
-        """Initialize the solver with a boundary size validator."""
-        self._validator = BoundaryValidator()
+    def __init__(self, validator: BoundaryValidator | None = None) -> None:
+        """Initialize the solver with an injectable boundary size validator.
 
-    def handle(self, grid: list[list[int]] | None) -> FailureResult:
+        Args:
+            validator: Size validator; defaults to ``BoundaryValidator()``.
+        """
+        self._validator = validator or BoundaryValidator()
+
+    def handle(self, grid: list[list[int]] | None) -> HandleResult:
         """Validate grid size and delegate to domain resolution when valid.
 
         Args:
@@ -35,7 +42,7 @@ class Solver:
             return size_failure
         return self.resolve(grid)
 
-    def resolve(self, grid: list[list[int]] | None) -> FailureResult:
+    def resolve(self, grid: list[list[int]] | None) -> HandleResult:
         """Run domain resolution for a size-valid grid.
 
         Args:
