@@ -213,9 +213,9 @@ flowchart LR
 
 ### 커버리지 목표 (GREEN 이후 측정)
 
-- [ ] Domain Logic: 95%+ (`pytest-cov`)
-- [ ] Boundary Layer: 85%+
-- [ ] 전체 TOTAL: 90%+
+- [ ] Domain Logic: 95%+ (`pytest-cov`) — 현재 `magic_square_validator` 76% (Wave D6 선행)
+- [x] Boundary Layer: 85%+ — ECB boundary+control 85~100%, Dual-Track boundary 85%+
+- [x] 전체 TOTAL: 90%+ — **93%** (2026-05-29, `tests/unit/` + GM 회귀 기준)
 
 ### 결함 목록 연결
 
@@ -531,9 +531,9 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 2. 문서·규칙 (Documentation / Config)
 
-- [ ] **D-01** `.cursorrules` vs `.mdc` 중복 — Report/04 중복 조항 제거, SSOT를 `.cursor/rules/*.mdc`로 고정
-- [ ] **D-02** README 커버리지 체크리스트 — Domain 95%+, TOTAL 90% 측정 결과 반영
-- [ ] **D-03** `pyproject.toml` 의존성 — ECB failure envelope pydantic 통일 시 runtime `dependencies` 승격 검토
+- [x] **D-01** `.cursorrules` vs `.mdc` 중복 — Report/04 중복 조항 제거, SSOT를 `.cursor/rules/*.mdc`로 고정
+- [x] **D-02** README 커버리지 체크리스트 — Domain 95%+, TOTAL 90% 측정 결과 반영
+- [x] **D-03** `pyproject.toml` 의존성 — ECB failure envelope pydantic 통일 시 runtime `dependencies` 승격 검토
 
 ### 3. 상수·SSOT (Constants)
 

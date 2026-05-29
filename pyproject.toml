@@ -3,10 +3,10 @@ name = "magicsquare"
 version = "0.1.0"
 description = "4x4 Magic Square validator"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["pydantic>=2.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0", "pydantic>=2.0"]
+dev = ["pytest>=8.0", "pytest-cov>=4.0"]
 
 [build-system]
 requires = ["setuptools>=61"]
