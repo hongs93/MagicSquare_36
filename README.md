@@ -552,11 +552,11 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 5. 타입·계약 (Type / Contract)
 
-- [ ] **T-01** `FailureResult` vs `FailureResponse` — ECB `@dataclass` vs Dual-Track pydantic → 단일 failure envelope 통합
-- [ ] **T-02** null 입력 계약 분기 — ECB `None` → `INVALID_SIZE` vs Dual-Track `None` → `E003_NULL_INPUT` → PRD 기준 통일 또는 문서화
-- [ ] **T-03** pydantic 스키마 이중 정의 — 테스트 `FailureResponseSchema` vs 프로덕션 `FailureResponse` → 프로덕션 타입으로 대체
-- [ ] **T-04** `Solver.handle` 반환 타입 — `FailureResult`만 선언 → FR-05 성공 경로 시 union 타입
-- [ ] **T-05** `FailureResult.is_failure` — Dual-Track `FailureResponse`와 필드·의미 동기화
+- [x] **T-01** `FailureResult` vs `FailureResponse` — ECB `@dataclass` vs Dual-Track pydantic → 단일 failure envelope 통합
+- [x] **T-02** null 입력 계약 분기 — ECB `None` → `INVALID_SIZE` vs Dual-Track `None` → `E003_NULL_INPUT` → PRD 기준 통일 또는 문서화
+- [x] **T-03** pydantic 스키마 이중 정의 — 테스트 `FailureResponseSchema` vs 프로덕션 `FailureResponse` → 프로덕션 타입으로 대체
+- [x] **T-04** `Solver.handle` 반환 타입 — `FailureResult`만 선언 → FR-05 성공 경로 시 union 타입
+- [x] **T-05** `FailureResult.is_failure` — Dual-Track `FailureResponse`와 필드·의미 동기화
 
 ### 6. 테스트·품질 (Test / Quality)
 
@@ -599,3 +599,4 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 | 1.5 | 2026-05-29 | REFACTOR 2번 그룹(D-01~D-03) — rules SSOT, pydantic runtime, coverage |
 | 1.6 | 2026-05-29 | REFACTOR 3번 그룹(C-01~C-04) — entity.oracles SSOT, error_contracts |
 | 1.7 | 2026-05-29 | REFACTOR 4번 그룹(R-01~R-04) — grid_validation, helpers, Solver DI |
+| 1.8 | 2026-05-29 | REFACTOR 5번 그룹(T-01~T-05) — pydantic FailureResult, EcbFailureSchema |

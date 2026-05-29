@@ -2,20 +2,9 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
-
-from magicsquare.boundary.responses import FailureResult
+from magicsquare.boundary.responses import EcbFailureSchema, FailureResult
 from magicsquare.boundary.validator import BoundaryValidator
 from tests.constants import EXPECTED_INVALID_SIZE_CODE, EXPECTED_INVALID_SIZE_MESSAGE
-
-
-class FailureResponseSchema(BaseModel):
-    """Pydantic contract for AC-FR-01-01 failure payload."""
-
-    model_config = ConfigDict(extra="forbid", populate_by_name=True)
-
-    code: str
-    message: str = Field(min_length=1)
 
 
 class TestNormalFailureReturn:
@@ -269,7 +258,7 @@ class TestFailureResponseType:
 
         # When
         result = validator.validate(grid)
-        parsed = FailureResponseSchema.model_validate(
+        parsed = EcbFailureSchema.model_validate(
             {"code": result.code, "message": result.message},
         )
 
