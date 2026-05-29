@@ -132,6 +132,7 @@ MagicSquare_XX/
 | [Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md](./Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md) | Dual-Track RED Skeleton 테스트·실행 보고 |
 | [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
+| [docs/architecture_stacks.md](./docs/architecture_stacks.md) | ECB vs Dual-Track 이중 스택·호출 경로·마이그레이션 |
 | [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
 | [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화 기록 |
@@ -207,8 +208,8 @@ flowchart LR
 
 ### Track B — Dual-Track Skeleton (Report/09, 23건)
 
-- [x] `tests/boundary/test_u_in.py` · `test_u_out.py` · `test_u_flow.py` (11건, `pytest.fail` 스켈레ton)
-- [x] `tests/entity/test_d_*.py` (12건, 스켈레ton)
+- [x] `tests/dualtrack/boundary/test_u_in.py` · `test_u_out.py` · `test_u_flow.py` (11건, `pytest.fail` 스켈레ton)
+- [x] `tests/dualtrack/entity/test_d_*.py` (12건, 스켈레ton)
 
 ### 커버리지 목표 (GREEN 이후 측정)
 
@@ -391,24 +392,24 @@ python -m pytest tests/unit/boundary/ tests/unit/control/ -v
 
 ### Import / pytest 주의 (Dual-Track)
 
-`tests/boundary/`(테스트 패키지)와 `src/boundary/`(프로덕션 패키지) 이름이 같아 **import 충돌**이 날 수 있습니다.
+Dual-Track 테스트는 `tests/dualtrack/boundary/` · `tests/dualtrack/entity/`에 두며 **`__init__.py` 없음** — `src/boundary` import shadowing 방지 (REFACTOR A-05).
 
 | 구분 | 테스트 경로 | 구현 경로 | import 예 |
 |------|-------------|-----------|-----------|
 | ECB | `tests/unit/boundary/` | `src/magicsquare/boundary/` | `magicsquare.boundary.*` |
-| Dual-Track | `tests/boundary/` | `src/boundary/` | `boundary.input_validator` |
+| Dual-Track | `tests/dualtrack/boundary/` | `src/boundary/` | `boundary.input_validator` |
 
-- [ ] `pyproject.toml` `pythonpath = ["src", "."]` 확인
-- [ ] Dual-Track pytest는 **ECB와 분리** 실행 (`tests/boundary/` vs `tests/unit/boundary/`)
+- [x] `pyproject.toml` `pythonpath = ["src", "."]` 확인
+- [x] Dual-Track pytest는 **ECB와 분리** 실행 (`tests/dualtrack/boundary/` vs `tests/unit/boundary/`)
 - [ ] collection 시 `ModuleNotFoundError: boundary.*` → 해당 Wave 구현 스켈레ton 추가
-- [ ] `tests/boundary/` 디렉터리가 `boundary` **패키지로 shadowing**되지 않는지 import smoke 확인
+- [x] `tests/dualtrack/boundary/` 디렉터리가 `boundary` **패키지로 shadowing**되지 않는지 import smoke 확인
 
 ```powershell
 # Dual-Track import smoke
 python -c "from boundary.input_validator import InputValidator; print(InputValidator)"
 
 # Dual-Track 테스트만 (ECB와 분리)
-python -m pytest tests/boundary/ -v
+python -m pytest tests/dualtrack/boundary/ -v
 ```
 
 ---
@@ -418,9 +419,9 @@ python -m pytest tests/boundary/ -v
 **구현:** `src/boundary/input_validator.py`, `src/boundary/schemas.py`  
 **GREEN 시점:** `grid is None` → `FailureResponse(type="ERROR", code="INVALID_SIZE", message="Grid must be 4x4.")`
 
-> `tests/boundary/test_ac_fr_01_01_*.py`가 없으면 **RED(assert Full) 먼저** 작성 후 GREEN.
+> `tests/dualtrack/boundary/test_ac_fr_01_01_*.py`가 없으면 **RED(assert Full) 먼저** 작성 후 GREEN.
 
-- [ ] **D1-RED** `tests/boundary/test_ac_fr_01_01_input_validation.py` + `ac_fr_01_01_constants.py` (없을 경우)
+- [ ] **D1-RED** `tests/dualtrack/boundary/test_ac_fr_01_01_input_validation.py` + `ac_fr_01_01_constants.py` (없을 경우)
 - [ ] **D1-GREEN** `InputValidator.validate(None)` — INVALID_SIZE 분기
 - [ ] **D1-GREEN** `FailureResponse` 스키마 (`type`, `code`, `message`)
 - [ ] **D1-VERIFY** `TestNormalFailureReturn::test_none_grid_returns_failure_with_invalid_size_code` passed
@@ -455,7 +456,7 @@ python -m pytest tests/boundary/ -v
 - [ ] **D3-RED→GREEN** `test_u_in_06_value_seventeen_returns_e004`
 - [ ] **D3-RED→GREEN** `test_u_in_07_nonzero_duplicate_returns_e005`
 - [ ] **D3-RED→GREEN** `test_u_in_08_blank_count_one_returns_e002`
-- [ ] **D3-VERIFY** `python -m pytest tests/boundary/test_u_in.py -v` → 전부 passed
+- [ ] **D3-VERIFY** `python -m pytest tests/dualtrack/boundary/test_u_in.py -v` → 전부 passed
 - [ ] **D3-COMMIT** `green(dual-track): InputValidator blank/range/duplicate`
 
 ---
@@ -468,7 +469,7 @@ python -m pytest tests/boundary/ -v
 - [ ] **D4-RED→GREEN** `test_u_flow_02_null_matrix_execute_not_called`
 - [ ] **D4-RED→GREEN** `test_u_flow_02_invalid_size_execute_not_called`
 - [ ] **D4-RED→GREEN** `test_u_flow_02_blank_count_invalid_execute_not_called`
-- [ ] **D4-VERIFY** `python -m pytest tests/boundary/test_u_flow.py -v` → 3 passed
+- [ ] **D4-VERIFY** `python -m pytest tests/dualtrack/boundary/test_u_flow.py -v` → 3 passed
 - [ ] **D4-COMMIT** `green(dual-track): UIBoundary invalid → execute×0`
 
 ---
@@ -481,12 +482,12 @@ python -m pytest tests/boundary/ -v
 - [ ] **D5-RED→GREEN** `test_u_out_01_success_payload_length_six`
 - [ ] **D5-RED→GREEN** `test_u_out_02_one_indexed_coordinates`
 - [ ] **D5-RED→GREEN** `test_u_out_03_exact_success_tuple_g1` → `[2,2,7,3,3,10]`
-- [ ] **D5-VERIFY** `python -m pytest tests/boundary/test_u_out.py -v` → 3 passed
+- [ ] **D5-VERIFY** `python -m pytest tests/dualtrack/boundary/test_u_out.py -v` → 3 passed
 - [ ] **D5-COMMIT** `green(dual-track): UIBoundary success payload contract`
 
 ---
 
-### Wave D6 — Track B Logic (`tests/entity/`, 별도 Wave)
+### Wave D6 — Track B Logic (`tests/dualtrack/entity/`, 별도 Wave)
 
 Report/09 RED Skeleton 15건. ECB·Dual-Track Track A GREEN 후 진행 권장.
 
@@ -494,15 +495,86 @@ Report/09 RED Skeleton 15건. ECB·Dual-Track Track A GREEN 후 진행 권장.
 - [ ] **D6** D-MIS-01 `find_not_exist_nums` (G1)
 - [ ] **D6** D-VAL-01~06 `is_magic_square` (G0, I-04~I-08)
 - [ ] **D6** D-SOL-01~04 `solution` (G1~G3; G2/G3 fixture TBD)
-- [ ] **D6-VERIFY** `python -m pytest tests/entity/ -v`
+- [ ] **D6-VERIFY** `python -m pytest tests/dualtrack/entity/ -v`
 
 ---
 
 ### Dual-Track Track A 전체 완료 체크
 
-- [ ] `python -m pytest tests/boundary/ -v` → 11 passed (U-IN-04~08 + U-OUT + U-FLOW)
+- [ ] `python -m pytest tests/dualtrack/boundary/ -v` → 11 passed (U-IN-04~08 + U-OUT + U-FLOW)
 - [ ] ECB 30건 회귀 유지 (`tests/unit/boundary/` + `tests/unit/control/`)
 - [ ] [defect_list.md](./defect_list.md) DEF-001~003 Close 및 커버리지 재측정 (DEF-004)
+
+---
+
+## REFACTOR 단계 To-Do 리스트
+
+> **SSOT:** [Report/12](./Report/12.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Complete-Report.md) (Wave 0 완료), [Report/13](./Report/13.%20MagicSquare_Golden-Master-GM2-Complete-Report.md) (GM-2 회귀 게이트)  
+> **원칙:** GREEN Wave 0 완료 후 **동작 보존** 리팩터링만. Report/06 assert **수정·삭제 금지**.  
+> **회귀 게이트:** ECB 30건 + Golden Master 5 TC green 유지 후 각 항목 체크.
+
+```powershell
+python -m pytest tests/unit/boundary/ tests/unit/control/ -v
+python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master -v
+```
+
+**권장 Wave 순서:** R-01 → I-01 → C-01~C-04 → T-01~T-03 → R-02~R-03 → Q-01 (Dual-Track D1 전후 타입·상수 통합 결정)
+
+### 1. 구조·아키텍처 (Architecture)
+
+- [x] **A-01** Dual-Track / ECB 이중 Boundary — `src/magicsquare/boundary/` vs `src/boundary/` 병행 → 단일 스택 통합 또는 마이그레이션 경로 문서화
+- [x] **A-02** Control 레이어 이중화 — `magicsquare.control.Solver` vs `control.SolvePartialMagicSquare` 역할·호출 경로 정리
+- [x] **A-03** Entity 패키지 이중화 — `src/magicsquare/entity/` vs `src/entity/` → SSOT re-export 또는 흡수
+- [x] **A-04** `NotImplementedError` 제어 흐름 — `BoundaryValidator` → `Solver.handle` 예외 분기 → FR-02+ 시 명시적 결과 타입 검토
+- [x] **A-05** `tests/dualtrack/boundary/` import shadowing — 테스트 패키지와 `src/boundary/` 이름 충돌 해소
+- [x] **A-06** `User` entity 고립 — `magicsquare.entity.user` 사용 경로 연결 또는 범위 밖 문서화
+
+### 2. 문서·규칙 (Documentation / Config)
+
+- [ ] **D-01** `.cursorrules` vs `.mdc` 중복 — Report/04 중복 조항 제거, SSOT를 `.cursor/rules/*.mdc`로 고정
+- [ ] **D-02** README 커버리지 체크리스트 — Domain 95%+, TOTAL 90% 측정 결과 반영
+- [ ] **D-03** `pyproject.toml` 의존성 — ECB failure envelope pydantic 통일 시 runtime `dependencies` 승격 검토
+
+### 3. 상수·SSOT (Constants)
+
+- [ ] **C-01** `GRID_SIZE` 이중 정의 — `magicsquare/entity/constants.py` · `entity/constants.py` → 단일 SSOT 참조
+- [ ] **C-02** INVALID_SIZE 오라클 3중 정의 — `responses.py` · `tests/constants.py` · `schemas.py` → 단일 출처, 테스트는 import만
+- [ ] **C-03** ECB vs Dual-Track 오라클 불일치 — `"INVALID_SIZE"` vs `"E001_INVALID_SIZE"`, 메시지 문구 → PRD §8.1 기준 SSOT 확정
+- [ ] **C-04** `magicsquare/entity/constants` 불완전 — ECB도 `entity/constants.py` 참조로 통일
+
+### 4. 코드 중복 (Duplication)
+
+- [ ] **R-01** `_invalid_size_failure()` 미추출 — `validator.py` 동일 `FailureResult` 생성 2회 → private 헬퍼 추출
+- [ ] **R-02** 4×4 차원 검증 로직 중복 — `BoundaryValidator` ↔ `InputValidator` → 공통 `is_valid_grid_size()` 추출
+- [ ] **R-03** size-invalid early return 패턴 — ECB `FailureResult` vs Dual-Track `FailureResponse` → 공통 size 검사 후 envelope 매핑
+- [ ] **R-04** `BoundaryValidator()` 반복 생성 — 테스트·`Solver`에서 매번 `new` → DI 또는 fixture 공유
+
+### 5. 타입·계약 (Type / Contract)
+
+- [ ] **T-01** `FailureResult` vs `FailureResponse` — ECB `@dataclass` vs Dual-Track pydantic → 단일 failure envelope 통합
+- [ ] **T-02** null 입력 계약 분기 — ECB `None` → `INVALID_SIZE` vs Dual-Track `None` → `E003_NULL_INPUT` → PRD 기준 통일 또는 문서화
+- [ ] **T-03** pydantic 스키마 이중 정의 — 테스트 `FailureResponseSchema` vs 프로덕션 `FailureResponse` → 프로덕션 타입으로 대체
+- [ ] **T-04** `Solver.handle` 반환 타입 — `FailureResult`만 선언 → FR-05 성공 경로 시 union 타입
+- [ ] **T-05** `FailureResult.is_failure` — Dual-Track `FailureResponse`와 필드·의미 동기화
+
+### 6. 테스트·품질 (Test / Quality)
+
+- [ ] **Q-01** DEF-004 TOTAL 커버리지 — boundary+control 88%, TOTAL 90% 미달 → Wave D 이후 재측정
+- [ ] **Q-02** Golden Master vs 전체 pytest — `-m golden_master` 단독 시 Dual-Track skeleton import 오류 → GM 전용 수집 범위 분리
+- [ ] **Q-03** Dual-Track RED skeleton — `tests/dualtrack/boundary/` · `tests/dualtrack/entity/` `pytest.fail` → GREEN 시 assert 교체, REFACTOR 전 GM-2 회귀 유지
+- [ ] **Q-04** ECB 30건 assert 불변 — REFACTOR는 구현만 변경, 테스트 약화 없이 green 유지
+
+### 7. 의존성 주입 (Dependency Injection)
+
+- [ ] **I-01** `Solver` validator 하드코딩 — `Solver(validator: BoundaryValidator | None = None)` 생성자 DI
+- [ ] **I-02** `Solver.resolve` mock/spy — DI 후 `resolve` stub 주입으로 C6 격리 테스트 단순화
+- [ ] **I-03** `UIBoundary` DI 대칭 — ECB `Solver`에 `UIBoundary`와 동일 injectable 패턴 적용
+
+### 8. 명명·가독성 (Naming / Readability)
+
+- [ ] **N-01** `NotImplementedError` 메시지 — `"size validation not implemented"` → FR-02+ 미구현 의미로 정확화
+- [ ] **N-02** `validate()` vs `handle()` — 레이어별 docstring에 Boundary/Control 책임 경계 명시
+- [ ] **N-03** Dual-Track 오류 코드 prefix — `E001_` … vs ECB plain `INVALID_SIZE` → naming convention 또는 `StrEnum` 도입
 
 ---
 
@@ -521,3 +593,5 @@ Report/09 RED Skeleton 15건. ECB·Dual-Track Track A GREEN 후 진행 권장.
 | 1.0 | 2026-05-28 | 프로젝트 README 초안 (STEP 1~5 기반) |
 | 1.1 | 2026-05-29 | RED 완료·GREEN Wave 0 커밋 묶음(C0~C6) 상세, Dual-Track Wave D1~D6 정리 |
 | 1.2 | 2026-05-29 | GREEN Wave 0 완료 — C1~C6·ECB 30 passed·DEF-001~003 Close |
+| 1.3 | 2026-05-29 | REFACTOR 단계 To-Do 8그룹(A~N) 체크리스트 추가 |
+| 1.4 | 2026-05-29 | REFACTOR 1번 그룹(A-01~A-06) — architecture doc, validate_size, dualtrack tests |

@@ -13,17 +13,14 @@ from magicsquare.entity.constants import GRID_SIZE
 class BoundaryValidator:
     """Validates that external grid input is 4×4 before Control/Domain work."""
 
-    def validate(self, grid: list[list[int]] | None) -> FailureResult:
-        """Return a size failure when ``grid`` dimensions are not 4×4.
+    def validate_size(self, grid: list[list[int]] | None) -> FailureResult | None:
+        """Return a size failure, or ``None`` when ``grid`` is 4×4.
 
         Args:
             grid: 4×4 integer matrix, or ``None`` when input is absent.
 
         Returns:
-            FailureResult when size validation fails.
-
-        Raises:
-            NotImplementedError: When dimensions are 4×4 but later rules are unimplemented.
+            FailureResult when size validation fails; ``None`` when dimensions are 4×4.
         """
         if grid is None or not grid:
             return FailureResult(
@@ -37,4 +34,21 @@ class BoundaryValidator:
                 message=INVALID_SIZE_MESSAGE,
                 is_failure=True,
             )
-        raise NotImplementedError("size validation not implemented")
+        return None
+
+    def validate(self, grid: list[list[int]] | None) -> FailureResult:
+        """Return a size failure when ``grid`` dimensions are not 4×4.
+
+        Args:
+            grid: 4×4 integer matrix, or ``None`` when input is absent.
+
+        Returns:
+            FailureResult when size validation fails.
+
+        Raises:
+            NotImplementedError: When dimensions are 4×4 but later rules are unimplemented.
+        """
+        size_failure = self.validate_size(grid)
+        if size_failure is not None:
+            return size_failure
+        raise NotImplementedError("post-size validation rules not implemented")

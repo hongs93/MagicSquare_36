@@ -10,7 +10,12 @@ from entity.services.missing_number_finder import find_not_exist_nums
 
 
 class SolvePartialMagicSquare:
-    """Execute the two-combination solver use case (FR-05)."""
+    """Execute the two-combination solver use case (FR-05).
+
+    Dual-Track Production Stack Control. ECB training counterpart:
+    ``magicsquare.control.Solver`` (AC-FR-01-01 size gate only). See
+    ``docs/architecture_stacks.md`` §3.
+    """
 
     def execute(self, matrix: list[list[int]]) -> list[int]:
         """Solve a contract-valid grid using small-first then reverse attempts.

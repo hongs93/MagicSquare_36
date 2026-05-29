@@ -1,4 +1,8 @@
-"""User domain entity."""
+"""User domain entity (ECB scaffolding — outside magic-square solve path).
+
+Report/03 training artifact for domain entity invariants. Not wired into
+``Solver``, ``UIBoundary``, or ``InputValidator``. See ``docs/architecture_stacks.md`` §5.
+"""
 
 from __future__ import annotations
 

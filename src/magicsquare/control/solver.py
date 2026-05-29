@@ -7,7 +7,12 @@ from magicsquare.boundary.validator import BoundaryValidator
 
 
 class Solver:
-    """Orchestrates validation and domain resolution for magic square grids."""
+    """Orchestrates validation and domain resolution for magic square grids.
+
+    ECB Training Stack Control (AC-FR-01-01, AC-FR-01-05). Dual-Track
+    production counterpart: ``control.SolvePartialMagicSquare`` (FR-05).
+    See ``docs/architecture_stacks.md`` §3.
+    """
 
     def __init__(self) -> None:
         """Initialize the solver with a boundary size validator."""
@@ -25,10 +30,10 @@ class Solver:
         Raises:
             NotImplementedError: When size is valid but domain resolve is not implemented.
         """
-        try:
-            return self._validator.validate(grid)
-        except NotImplementedError:
-            return self.resolve(grid)
+        size_failure = self._validator.validate_size(grid)
+        if size_failure is not None:
+            return size_failure
+        return self.resolve(grid)
 
     def resolve(self, grid: list[list[int]] | None) -> FailureResult:
         """Run domain resolution for a size-valid grid.
