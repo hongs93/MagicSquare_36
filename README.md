@@ -131,6 +131,7 @@ MagicSquare_XX/
 | [Report/07. MagicSquare_DualTrack-FR01-FR05-RED-Design-Report.md](./Report/07.%20MagicSquare_DualTrack-FR01-FR05-RED-Design-Report.md) | Dual-Track FR-01~05 RED 설계표 |
 | [Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md](./Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md) | Dual-Track RED Skeleton 테스트·실행 보고 |
 | [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
+| [Report/15. MagicSquare_REFACTOR-Groups-1-8-Complete-Report.md](./Report/15.%20MagicSquare_REFACTOR-Groups-1-8-Complete-Report.md) | REFACTOR 8그룹(A~N) 완료·7 commits·93% coverage |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
 | [docs/architecture_stacks.md](./docs/architecture_stacks.md) | ECB vs Dual-Track 이중 스택·호출 경로·마이그레이션 |
 | [docs/error_contracts.md](./docs/error_contracts.md) | ECB vs Dual-Track 오류 코드·메시지 SSOT (C-03) |
@@ -143,6 +144,7 @@ MagicSquare_XX/
 | [Prompting/04. cursor_magicsquare_cursor-rules_modularization-Prompt.md](./Prompting/04.%20cursor_magicsquare_cursor-rules_modularization-Prompt.md) | Cursor rules 분할 생성·작성 대화 기록 |
 | [Prompting/06. cursor_magicsquare_ac-fr01-01-red-test-Prompt.md](./Prompting/06.%20cursor_magicsquare_ac-fr01-01-red-test-Prompt.md) | AC-FR-01-01 RED 테스트·결함 대화 기록 |
 | [Prompting/09. cursor_magicsquare_ac-fr01-01-green-wave0-Prompt.md](./Prompting/09.%20cursor_magicsquare_ac-fr01-01-green-wave0-Prompt.md) | AC-FR-01-01 GREEN Wave 0 대화 기록 |
+| [Prompting/15. cursor_magicsquare_refactor-groups-1-8-Prompt.md](./Prompting/15.%20cursor_magicsquare_refactor-groups-1-8-Prompt.md) | REFACTOR 1~8 그룹 대화·커밋 Transcript |
 
 보고서에는 **구현 설계, 코드, 알고리즘**을 포함하지 않습니다.
 

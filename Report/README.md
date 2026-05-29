@@ -31,6 +31,7 @@
 | [12. MagicSquare_AC-FR01-01-GREEN-Wave0-Complete-Report.md](./12.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Complete-Report.md) | AC-FR-01-01 GREEN Wave 0 C1~C6 완료·30 passed·DEF Close |
 | [13. MagicSquare_Golden-Master-GM2-Complete-Report.md](./13.%20MagicSquare_Golden-Master-GM2-Complete-Report.md) | Golden Master GM-2 approve 패턴·5 TC·회귀 안전장치·README GM-3 |
 | [14. MagicSquare_Code-Review-REFACTOR-Readiness-Report.md](./14.%20MagicSquare_Code-Review-REFACTOR-Readiness-Report.md) | code-reviewer 리뷰·REFACTOR 준비도·3파일 코드 스멜·RED→GREEN 선행 조건 |
+| [15. MagicSquare_REFACTOR-Groups-1-8-Complete-Report.md](./15.%20MagicSquare_REFACTOR-Groups-1-8-Complete-Report.md) | REFACTOR 8그룹(A~N) 완료·7 commits·93% coverage·DEF-004 Close |
 
 
 
@@ -59,14 +60,14 @@
 | 12 GREEN Wave 0 | C1~C6 완료 · ECB 30 passed · Solver · GRID_SIZE · DEF-001~003 Close | REFACTOR · Dual-Track D1 · FR-02 |
 | 13 Golden Master GM-2 | approve 패턴 · 5 TC · golden_master_expected.txt · README GM-01~10 | REFACTOR · Dual-Track GREEN |
 | 14 Code Review · REFACTOR | code-reviewer Findings · 테스트 대응 · 스멜 High/Med/Low · suite shadowing | REFACTOR 실행 · Track B GREEN |
+| 15 REFACTOR 1~8 | 8그룹 A~N · dualtrack · oracles · pydantic FailureResult · 93% · DEF-004 Close | Dual-Track D1~D6 GREEN |
 
 
 
 ## 다음 단계 (예정)
 
-
-
-- Dual-Track Wave D1 (`src/boundary/`) — ECB 30건 회귀 유지
+- Dual-Track Wave D1 (`tests/dualtrack/boundary/`) — ECB 30건·GM-2 회귀 유지
+- Wave D6 Domain GREEN → `magic_square_validator` 95%+
 - failureType Should → Must 승격 여부 결정
 
 
