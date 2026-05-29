@@ -101,12 +101,17 @@ MagicSquare_XX/
 │   ├── 01. MagicSquare_Problem-Definition-Report.md
 │   ├── 02. MagicSquare_TDD-Design-Report.md
 │   ├── 03. MagicSquare_Implementation-Setup-Report.md
-│   └── 04. MagicSquare_Cursor-Rules-Modularization-Report.md
+│   ├── 04. MagicSquare_Cursor-Rules-Modularization-Report.md
+│   └── 06. MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md
+├── docs/
+│   └── test_plan.md
+├── defect_list.md
 └── Prompting/                ← 워크숍 프롬프트·대화 기록
     ├── 01. cursor_4x4_magic_square_problem_definit-Prompt.md
     ├── 02. cursor_4x4_magic_square_tdd_design-Prompt.md
     ├── 03. cursor_magicsquare_cursorrules_ecb_user-Prompt.md
-    └── 04. cursor_magicsquare_cursor-rules_modularization-Prompt.md
+    ├── 04. cursor_magicsquare_cursor-rules_modularization-Prompt.md
+    └── 06. cursor_magicsquare_ac-fr01-01-red-test-Prompt.md
 ```
 
 ---
@@ -119,11 +124,15 @@ MagicSquare_XX/
 | [Report/02. MagicSquare_TDD-Design-Report.md](./Report/02.%20MagicSquare_TDD-Design-Report.md) | TDD 설계 (범위, I/O, 오라클, Wave, 회귀) |
 | [Report/03. MagicSquare_Implementation-Setup-Report.md](./Report/03.%20MagicSquare_Implementation-Setup-Report.md) | 구현 기반 (`.cursorrules`, ECB, User entity) |
 | [Report/04. MagicSquare_Cursor-Rules-Modularization-Report.md](./Report/04.%20MagicSquare_Cursor-Rules-Modularization-Report.md) | `.cursor/rules/*.mdc` 규칙 모듈화 및 적용 보고 |
+| [Report/06. MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md](./Report/06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) | AC-FR-01-01 RED 테스트·결함·실행 결과 보고 |
+| [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
+| [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
 | [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화 기록 |
 | [Prompting/02. cursor_4x4_magic_square_tdd_design-Prompt.md](./Prompting/02.%20cursor_4x4_magic_square_tdd_design-Prompt.md) | TDD 설계 프롬프트·대화 기록 |
 | [Prompting/03. cursor_magicsquare_cursorrules_ecb_user-Prompt.md](./Prompting/03.%20cursor_magicsquare_cursorrules_ecb_user-Prompt.md) | Cursor 규칙·ECB User 프롬프트·대화 기록 |
 | [Prompting/04. cursor_magicsquare_cursor-rules_modularization-Prompt.md](./Prompting/04.%20cursor_magicsquare_cursor-rules_modularization-Prompt.md) | Cursor rules 분할 생성·작성 대화 기록 |
+| [Prompting/06. cursor_magicsquare_ac-fr01-01-red-test-Prompt.md](./Prompting/06.%20cursor_magicsquare_ac-fr01-01-red-test-Prompt.md) | AC-FR-01-01 RED 테스트·결함 대화 기록 |
 
 보고서에는 **구현 설계, 코드, 알고리즘**을 포함하지 않습니다.
 
@@ -152,6 +161,41 @@ flowchart LR
 1. Report 02 **Wave 0**부터 `Grid` 검증기 TDD (entity → control → acceptance 테스트)  
 2. **failureType** Should → Must 승격 여부 결정  
 3. I-01 fixture로 SIZE Red → Green 진행  
+
+---
+
+## RED 단계 To-Do 리스트
+
+> 이 체크리스트는 test_plan.md 기반으로 생성되었습니다.
+> 각 항목은 RED(실패 테스트 작성) 완료 시 체크합니다.
+
+### Track A — UI / Boundary 테스트
+
+- [ ] TC-A-01: grid=None 입력 → 실패 결과 반환 (Happy Path of Failure)
+- [ ] TC-A-02: code가 정확히 "INVALID_SIZE" 문자열인지 검증
+- [ ] TC-A-03: message가 "Grid must be 4x4." 와 문자 단위 동일한지 검증
+- [ ] TC-A-04: grid=None 시 Domain 진입점 0회 호출 (mock/spy 검증)
+- [ ] TC-A-05: grid=[] 빈 리스트 → 실패 결과 반환
+- [ ] TC-A-06: grid=3×4 크기 불일치 → 실패 결과 반환
+- [ ] TC-A-07: 반환 객체 타입이 지정 실패 결과 구조체인지 검증
+
+### Track B — Domain / Logic 테스트
+
+- [ ] TC-B-01: resolve()가 None grid를 직접 받지 않음을 격리 검증
+- [ ] TC-B-02: Boundary가 None 분기를 처리 후 resolve() 미호출 확인
+- [ ] TC-B-03: resolve() mock이 호출됐을 경우 테스트 실패 처리
+- [ ] TC-B-04: AC-FR-01-02~05 범위의 케이스는 이 커밋에 포함하지 않음 확인
+
+### 커버리지 목표
+
+- [ ] Domain Logic: 95%+ (pip install pytest-cov)
+- [ ] Boundary Layer: 85%+
+- [ ] 전체 TOTAL: 90%+
+
+### 결함 목록 연결
+
+- [x] [defect_list.md](./defect_list.md) 생성 및 발견 결함 기록
+- [ ] 모든 결함 수정 후 회귀 테스트 통과 확인
 
 ---
 

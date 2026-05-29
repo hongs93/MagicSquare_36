@@ -23,6 +23,7 @@
 | [04. MagicSquare_Cursor-Rules-Modularization-Report.md](./04.%20MagicSquare_Cursor-Rules-Modularization-Report.md) | `.cursor/rules/*.mdc` 5개 규칙 파일 도입 및 구조화 보고 |
 
 | [05. MagicSquare_User-Journey-Story-Scenario-Report.md](./05.%20MagicSquare_User-Journey-Story-Scenario-Report.md) | Level 1~4 요구 구조화(Epic, Journey, Stories, Technical Scenario) 보고 |
+| [06. MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md](./06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) | AC-FR-01-01 테스트 계획·RED 30건·결함·실행 결과 보고 |
 
 
 
@@ -43,6 +44,7 @@
 | 04 규칙 모듈화 | `.cursor/rules` 구조 · 5개 `.mdc` 규칙 분리 | Grid 검증기 기능 구현 |
 
 | 05 요구 구조화 | Epic · User Journey · User Stories · Implementation Scenario | 실제 구현 코드 · 테스트 코드 · Task 실행 |
+| 06 AC-FR-01-01 RED | 테스트 계획 · RED 테스트 30건 · defect_list · pytest RED 결과 | GREEN 구현 · 30 passed |
 
 
 
