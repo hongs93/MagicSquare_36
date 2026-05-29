@@ -84,7 +84,7 @@ D2가 깨지면 D3만으로 「유효」라고 하지 않습니다.
 | 구현 기반 (Report 03) | ✅ 완료 |
 | `.cursorrules` · ECB 골격 · User entity | ✅ 완료 |
 | AC-FR-01-01 RED (Report 06, ECB 30건) | ✅ 완료 |
-| AC-FR-01-01 GREEN (Wave 0, ECB) | 🔄 진행 중 (C0·C1 일부) |
+| AC-FR-01-01 GREEN (Wave 0, ECB) | ✅ 완료 (C0~C6, 30 passed) |
 | Dual-Track RED Skeleton (Report 09, 23건) | ✅ 완료 |
 | Grid 검증기 (Report 02 Wave) | ❌ 미착수 |
 
@@ -196,7 +196,7 @@ flowchart LR
 ### 결함 목록 연결
 
 - [x] [defect_list.md](./defect_list.md) 생성 및 발견 결함 기록 (DEF-001~004)
-- [ ] DEF-001~003 Close 및 회귀 30 passed (DEF-004 커버리지 재측정)
+- [x] DEF-001~003 Close 및 회귀 30 passed (DEF-004 커버리지 재측정)
 
 ---
 
@@ -214,12 +214,12 @@ RED 30건을 **6개 커밋**으로 나눠 GREEN합니다. 각 커밋은 해당 `
 | 커밋 | BV | 구현 요약 | 테스트 수 | pytest 필터 | 상태 |
 |------|-----|-----------|-----------|-------------|------|
 | **C0** | — | `FailureResult` (`responses.py`) | 수집만 | `--collect-only` | [x] |
-| **C1** | BV-01 | `grid is None` → `INVALID_SIZE` | 13 | `-k none_grid` | [ ] |
-| **C2** | BV-02 | `grid=[]` (행 0) | 3 | `-k empty_list` | [ ] |
-| **C3** | BV-03 | `grid=[[]]*4` (4×0) | 2 | `-k four_empty_rows` | [ ] |
-| **C4** | BV-04 | `grid_3x4` (행≠4 또는 열≠4) | 6 | `-k 3x4` | [ ] |
-| **C5** | 통합 | None·[]·4×0·3×4 fixture 루프 | 1 | 아래 단일 테스트 | [ ] |
-| **C6** | 격리 | `Solver.handle` + `resolve()` mock 0회 | 5 | `tests/unit/control/` | [ ] |
+| **C1** | BV-01 | `grid is None` → `INVALID_SIZE` | 13 | `-k none_grid` | [x] |
+| **C2** | BV-02 | `grid=[]` (행 0) | 3 | `-k empty_list` | [x] |
+| **C3** | BV-03 | `grid=[[]]*4` (4×0) | 2 | `-k four_empty_rows` | [x] |
+| **C4** | BV-04 | `grid_3x4` (행≠4 또는 열≠4) | 6 | `-k 3x4` | [x] |
+| **C5** | 통합 | None·[]·4×0·3×4 fixture 루프 | 1 | 아래 단일 테스트 | [x] |
+| **C6** | 격리 | `Solver.handle` + `resolve()` mock 0회 | 5 | `tests/unit/control/` | [x] |
 
 **구현 경로:** `src/magicsquare/boundary/responses.py`, `validator.py`, `src/magicsquare/control/solver.py`  
 **미포함 (현재 RED 30건에 없음):** 4×3, 5×5, jagged — RED 추가 시 C4 다음 Wave.
@@ -353,13 +353,13 @@ python -m pytest tests/unit/boundary/ tests/unit/control/ -v
 ### 선행 게이트 체크리스트 — ECB Track
 
 - [x] **C0** `FailureResult` — pytest 수집 가능
-- [ ] **C1** `grid=None` (13건)
-- [ ] **C2** `grid=[]` (+3건)
-- [ ] **C3** `grid=[[]]*4` (+2건)
-- [ ] **C4** `grid_3x4` (+6건)
-- [ ] **C5** fixture 루프 (+1건)
-- [ ] **C6** Control 격리 (5건)
-- [ ] **회귀** `tests/unit/boundary/` + `tests/unit/control/` → **30 passed**
+- [x] **C1** `grid=None` (13건)
+- [x] **C2** `grid=[]` (+3건)
+- [x] **C3** `grid=[[]]*4` (+2건)
+- [x] **C4** `grid_3x4` (+6건)
+- [x] **C5** fixture 루프 (+1건)
+- [x] **C6** Control 격리 (5건)
+- [x] **회귀** `tests/unit/boundary/` + `tests/unit/control/` → **30 passed**
 
 ```powershell
 # ECB 전체 회귀 (선행 게이트 완료 시)
@@ -497,3 +497,4 @@ Report/09 RED Skeleton 15건. ECB·Dual-Track Track A GREEN 후 진행 권장.
 |------|------|------|
 | 1.0 | 2026-05-28 | 프로젝트 README 초안 (STEP 1~5 기반) |
 | 1.1 | 2026-05-29 | RED 완료·GREEN Wave 0 커밋 묶음(C0~C6) 상세, Dual-Track Wave D1~D6 정리 |
+| 1.2 | 2026-05-29 | GREEN Wave 0 완료 — C1~C6·ECB 30 passed·DEF-001~003 Close |
