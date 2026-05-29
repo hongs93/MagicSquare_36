@@ -24,7 +24,7 @@ class BoundaryValidator:
         Raises:
             NotImplementedError: For non-``None`` grids until size rules are implemented.
         """
-        if grid is None:
+        if grid is None or not grid:
             return FailureResult(
                 code=INVALID_SIZE_CODE,
                 message=INVALID_SIZE_MESSAGE,
