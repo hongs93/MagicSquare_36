@@ -83,6 +83,9 @@ D2가 깨지면 D3만으로 「유효」라고 하지 않습니다.
 | 입출력 계약 초안 | ✅ Report 02 |
 | 구현 기반 (Report 03) | ✅ 완료 |
 | `.cursorrules` · ECB 골격 · User entity | ✅ 완료 |
+| AC-FR-01-01 RED (Report 06, ECB 30건) | ✅ 완료 |
+| AC-FR-01-01 GREEN (Wave 0, ECB) | ✅ 완료 (C0~C6, 30 passed) |
+| Dual-Track RED Skeleton (Report 09, 23건) | ✅ 완료 |
 | Grid 검증기 (Report 02 Wave) | ❌ 미착수 |
 
 ---
@@ -125,6 +128,9 @@ MagicSquare_XX/
 | [Report/03. MagicSquare_Implementation-Setup-Report.md](./Report/03.%20MagicSquare_Implementation-Setup-Report.md) | 구현 기반 (`.cursorrules`, ECB, User entity) |
 | [Report/04. MagicSquare_Cursor-Rules-Modularization-Report.md](./Report/04.%20MagicSquare_Cursor-Rules-Modularization-Report.md) | `.cursor/rules/*.mdc` 규칙 모듈화 및 적용 보고 |
 | [Report/06. MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md](./Report/06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) | AC-FR-01-01 RED 테스트·결함·실행 결과 보고 |
+| [Report/07. MagicSquare_DualTrack-FR01-FR05-RED-Design-Report.md](./Report/07.%20MagicSquare_DualTrack-FR01-FR05-RED-Design-Report.md) | Dual-Track FR-01~05 RED 설계표 |
+| [Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md](./Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md) | Dual-Track RED Skeleton 테스트·실행 보고 |
+| [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
 | [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
@@ -133,6 +139,7 @@ MagicSquare_XX/
 | [Prompting/03. cursor_magicsquare_cursorrules_ecb_user-Prompt.md](./Prompting/03.%20cursor_magicsquare_cursorrules_ecb_user-Prompt.md) | Cursor 규칙·ECB User 프롬프트·대화 기록 |
 | [Prompting/04. cursor_magicsquare_cursor-rules_modularization-Prompt.md](./Prompting/04.%20cursor_magicsquare_cursor-rules_modularization-Prompt.md) | Cursor rules 분할 생성·작성 대화 기록 |
 | [Prompting/06. cursor_magicsquare_ac-fr01-01-red-test-Prompt.md](./Prompting/06.%20cursor_magicsquare_ac-fr01-01-red-test-Prompt.md) | AC-FR-01-01 RED 테스트·결함 대화 기록 |
+| [Prompting/09. cursor_magicsquare_ac-fr01-01-green-wave0-Prompt.md](./Prompting/09.%20cursor_magicsquare_ac-fr01-01-green-wave0-Prompt.md) | AC-FR-01-01 GREEN Wave 0 대화 기록 |
 
 보고서에는 **구현 설계, 코드, 알고리즘**을 포함하지 않습니다.
 
@@ -158,44 +165,344 @@ flowchart LR
 
 ## 다음 단계 (권장)
 
-1. Report 02 **Wave 0**부터 `Grid` 검증기 TDD (entity → control → acceptance 테스트)  
-2. **failureType** Should → Must 승격 여부 결정  
-3. I-01 fixture로 SIZE Red → Green 진행  
+1. **GREEN Wave 0** — 아래 [ECB GREEN 커밋 묶음](#ecb-green-커밋-묶음-wave-0) C1~C6 순서로 최소 구현·커밋  
+2. **Dual-Track Wave D1~** — ECB 30건 회귀 유지 후 `src/boundary/` 진행  
+3. Report 02 **failureType** Should → Must 승격 여부 결정  
 
 ---
 
 ## RED 단계 To-Do 리스트
 
-> 이 체크리스트는 test_plan.md 기반으로 생성되었습니다.
-> 각 항목은 RED(실패 테스트 작성) 완료 시 체크합니다.
+> 이 체크리스트는 [docs/test_plan.md](./docs/test_plan.md) · [Report/06](./Report/06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) 기반입니다.  
+> ECB Full RED 30건은 `tests/unit/boundary/` + `tests/unit/control/`에 **작성 완료** — assert 수정·삭제 금지.
 
-### Track A — UI / Boundary 테스트
+### Golden Master 회귀 안전장치
 
-- [ ] TC-A-01: grid=None 입력 → 실패 결과 반환 (Happy Path of Failure)
-- [ ] TC-A-02: code가 정확히 "INVALID_SIZE" 문자열인지 검증
-- [ ] TC-A-03: message가 "Grid must be 4x4." 와 문자 단위 동일한지 검증
-- [ ] TC-A-04: grid=None 시 Domain 진입점 0회 호출 (mock/spy 검증)
-- [ ] TC-A-05: grid=[] 빈 리스트 → 실패 결과 반환
-- [ ] TC-A-06: grid=3×4 크기 불일치 → 실패 결과 반환
-- [ ] TC-A-07: 반환 객체 타입이 지정 실패 결과 구조체인지 검증
+> Refactoring 시작 전 구축. GREEN 완료 후 즉시 적용.
 
-### Track B — Domain / Logic 테스트
+**기준 파일 생성**
 
-- [ ] TC-B-01: resolve()가 None grid를 직접 받지 않음을 격리 검증
-- [ ] TC-B-02: Boundary가 None 분기를 처리 후 resolve() 미호출 확인
-- [ ] TC-B-03: resolve() mock이 호출됐을 경우 테스트 실패 처리
-- [ ] TC-B-04: AC-FR-01-02~05 범위의 케이스는 이 커밋에 포함하지 않음 확인
+- GM-01: `tests/golden_master_expected.txt` 생성
+- GM-02: 정상/역순/오류 시나리오 추가
+- GM-03: `git add tests/golden_master_expected.txt`
 
-### 커버리지 목표
+**테스트 코드**
 
-- [ ] Domain Logic: 95%+ (pip install pytest-cov)
+- GM-04: `test_golden_master_magic_square` 작성
+- GM-05: approve 패턴 적용
+- GM-06: Golden Master 테스트 PASS 확인
+
+**회귀 보호**
+
+- GM-07: row-major 규칙 보호
+- GM-08: 1-index 출력 보호
+- GM-09: reverse 조합 fallback 보호
+- GM-10: Error Contract 보호
+
+### Track A — ECB Boundary / Control (Report/06, 30건)
+
+- [x] TC-A-01~07: `test_boundary_validator_size.py` (25건) — `grid=None` / `[]` / `[[]]*4` / 3×4 등
+- [x] TC-A-04: `test_solver_size_validation_gate.py` (5건) — `resolve()` 0회 mock/spy
+- [x] 오라클 상수: `tests/constants.py` (`INVALID_SIZE`, `Grid must be 4x4.`)
+
+### Track B — Dual-Track Skeleton (Report/09, 23건)
+
+- [x] `tests/boundary/test_u_in.py` · `test_u_out.py` · `test_u_flow.py` (11건, `pytest.fail` 스켈레ton)
+- [x] `tests/entity/test_d_*.py` (12건, 스켈레ton)
+
+### 커버리지 목표 (GREEN 이후 측정)
+
+- [ ] Domain Logic: 95%+ (`pytest-cov`)
 - [ ] Boundary Layer: 85%+
 - [ ] 전체 TOTAL: 90%+
 
 ### 결함 목록 연결
 
-- [x] [defect_list.md](./defect_list.md) 생성 및 발견 결함 기록
-- [ ] 모든 결함 수정 후 회귀 테스트 통과 확인
+- [x] [defect_list.md](./defect_list.md) 생성 및 발견 결함 기록 (DEF-001~004)
+- [x] DEF-001~003 Close 및 회귀 30 passed (DEF-004 커버리지 재측정)
+
+---
+
+## GREEN 단계 To-Do 리스트
+
+> **SSOT:** [Report/06](./Report/06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) (ECB 30건), [Report/09](./Report/09.MagicSquare_DualTrack_RED_TestPlan_Design_Report.md) (Dual-Track)  
+> **원칙:** RED 확인 → **GREEN 최소 구현만** → REFACTOR 분리. Report/06 assert **수정·삭제 금지**.  
+> **오라클:** `tests/constants.py` — `EXPECTED_INVALID_SIZE_CODE` / `EXPECTED_INVALID_SIZE_MESSAGE`  
+> **권장 순서:** 입력 복잡도 `None` → `[]` → `[[]]*4` → `3×4` → Control 격리 (C6). Dual-Track은 ECB 30건 후.
+
+### ECB GREEN 커밋 묶음 (Wave 0)
+
+RED 30건을 **6개 커밋**으로 나눠 GREEN합니다. 각 커밋은 해당 `-k` 필터만 통과시킨 뒤, C5·C6에서 Boundary/Control 전체 회귀를 확인합니다.
+
+| 커밋 | BV | 구현 요약 | 테스트 수 | pytest 필터 | 상태 |
+|------|-----|-----------|-----------|-------------|------|
+| **C0** | — | `FailureResult` (`responses.py`) | 수집만 | `--collect-only` | [x] |
+| **C1** | BV-01 | `grid is None` → `INVALID_SIZE` | 13 | `-k none_grid` | [x] |
+| **C2** | BV-02 | `grid=[]` (행 0) | 3 | `-k empty_list` | [x] |
+| **C3** | BV-03 | `grid=[[]]*4` (4×0) | 2 | `-k four_empty_rows` | [x] |
+| **C4** | BV-04 | `grid_3x4` (행≠4 또는 열≠4) | 6 | `-k 3x4` | [x] |
+| **C5** | 통합 | None·[]·4×0·3×4 fixture 루프 | 1 | 아래 단일 테스트 | [x] |
+| **C6** | 격리 | `Solver.handle` + `resolve()` mock 0회 | 5 | `tests/unit/control/` | [x] |
+
+**구현 경로:** `src/magicsquare/boundary/responses.py`, `validator.py`, `src/magicsquare/control/solver.py`  
+**미포함 (현재 RED 30건에 없음):** 4×3, 5×5, jagged — RED 추가 시 C4 다음 Wave.
+
+#### C0 — 수집 가능 (인프라)
+
+- [x] `magicsquare.boundary.responses.FailureResult` (`code`, `message`, `is_failure`)
+- [x] `magicsquare.boundary.validator.BoundaryValidator` 스켈레ton
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py --collect-only -q
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): add FailureResult for pytest collection`
+
+#### C1 — BV-01 `grid=None` (13건)
+
+| # | 클래스::테스트 |
+|---|----------------|
+| 1 | `TestNormalFailureReturn::test_none_grid_returns_failure_invalid_size_code` |
+| 2 | `::test_none_grid_returns_failure_invalid_size_message` |
+| 3 | `::test_none_grid_returns_result_without_exception` |
+| 4 | `::test_none_grid_failure_has_code_attribute` |
+| 5 | `::test_none_grid_failure_has_message_attribute` |
+| 6 | `TestMessageIdentity::test_none_grid_message_matches_prd_exactly_char_by_char` |
+| 7 | `::test_invalid_size_message_character_count` |
+| 8 | `::test_invalid_size_message_starts_with_grid` |
+| 9 | `::test_invalid_size_message_ends_with_period` |
+| 10 | `::test_invalid_size_message_no_extra_whitespace` |
+| 11 | `TestFailureResponseType::test_none_grid_returns_failure_result_type` |
+| 12 | `::test_failure_result_matches_pydantic_schema` |
+| 13 | `TestAcFr0101ScopeRestriction::test_none_grid_failure_code_not_in_out_of_scope_set` |
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py -k "none_grid" -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): INVALID_SIZE for grid=None`
+
+#### C2 — BV-02 `grid=[]` (3건)
+
+| # | 클래스::테스트 |
+|---|----------------|
+| 14 | `TestBoundaryValues::test_empty_list_returns_invalid_size_failure` |
+| 15 | `::test_empty_list_failure_code_is_invalid_size` |
+| 16 | `TestFailureResponseType::test_empty_list_returns_failure_result_type` |
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py -k "empty_list" -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): INVALID_SIZE for empty grid`
+
+#### C3 — BV-03 `grid=[[]]*4` (2건)
+
+| # | 클래스::테스트 |
+|---|----------------|
+| 17 | `TestBoundaryValues::test_four_empty_rows_returns_invalid_size_failure` |
+| 18 | `TestFailureResponseType::test_four_empty_rows_returns_failure_result_type` |
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py -k "four_empty_rows" -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): INVALID_SIZE for four empty rows`
+
+#### C4 — BV-04 `grid_3x4` (6건)
+
+| # | 클래스::테스트 |
+|---|----------------|
+| 19 | `TestBoundaryValues::test_3x4_matrix_returns_invalid_size_failure` |
+| 20 | `::test_3x4_matrix_failure_message_is_exact` |
+| 21 | `TestFailureResponseType::test_3x4_matrix_returns_failure_result_type` |
+| 22 | `TestAcFr0101ScopeRestriction::test_3x4_failure_code_is_not_invalid_blank_count` |
+| 23 | `::test_3x4_failure_code_is_not_invalid_range` |
+| 24 | `::test_3x4_failure_code_is_not_duplicate_nonzero` |
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py -k "3x4" -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): INVALID_SIZE for non-4x4 dimensions`
+
+#### C5 — BV 통합 루프 (1건)
+
+| # | 클래스::테스트 |
+|---|----------------|
+| 25 | `TestAcFr0101ScopeRestriction::test_size_only_fixtures_never_use_valid_4x4_contract` |
+
+```powershell
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py::TestAcFr0101ScopeRestriction::test_size_only_fixtures_never_use_valid_4x4_contract -v
+python -m pytest tests/unit/boundary/test_boundary_validator_size.py -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-01): boundary size-invalid fixture loop`
+
+#### C6 — AC-FR-01-05 Control 격리 (5건)
+
+| # | 테스트 (`test_solver_size_validation_gate.py`) |
+|---|------------------------------------------------|
+| 26 | `test_none_grid_resolve_called_zero_times` |
+| 27 | `test_none_grid_handle_returns_failure_without_resolve` |
+| 28 | `test_empty_list_resolve_called_zero_times` |
+| 29 | `test_four_empty_rows_resolve_called_zero_times` |
+| 30 | `test_3x4_matrix_resolve_called_zero_times` |
+
+```powershell
+python -m pytest tests/unit/control/test_solver_size_validation_gate.py -v
+python -m pytest tests/unit/boundary/ tests/unit/control/ -v
+```
+
+**커밋 메시지 예:** `green(ac-fr-01-05): Solver skips resolve on size-invalid grid`
+
+#### ECB 30건 전체 오름차순 (참조)
+
+```text
+[BoundaryValidator — tests/unit/boundary/test_boundary_validator_size.py]
+  1–13   None          (C1)
+ 14–16   []            (C2)
+ 17–18   [[]]*4        (C3)
+ 19–24   3×4           (C4)
+ 25      4종 fixture   (C5)
+
+[Solver + mock — tests/unit/control/test_solver_size_validation_gate.py]
+ 26–27   None          (C6)
+ 28      []
+ 29      [[]]*4
+ 30      3×4
+```
+
+### 선행 게이트 체크리스트 — ECB Track
+
+- [x] **C0** `FailureResult` — pytest 수집 가능
+- [x] **C1** `grid=None` (13건)
+- [x] **C2** `grid=[]` (+3건)
+- [x] **C3** `grid=[[]]*4` (+2건)
+- [x] **C4** `grid_3x4` (+6건)
+- [x] **C5** fixture 루프 (+1건)
+- [x] **C6** Control 격리 (5건)
+- [x] **회귀** `tests/unit/boundary/` + `tests/unit/control/` → **30 passed**
+
+```powershell
+# ECB 전체 회귀 (선행 게이트 완료 시)
+python -m pytest tests/unit/boundary/ tests/unit/control/ -v
+```
+
+### Import / pytest 주의 (Dual-Track)
+
+`tests/boundary/`(테스트 패키지)와 `src/boundary/`(프로덕션 패키지) 이름이 같아 **import 충돌**이 날 수 있습니다.
+
+| 구분 | 테스트 경로 | 구현 경로 | import 예 |
+|------|-------------|-----------|-----------|
+| ECB | `tests/unit/boundary/` | `src/magicsquare/boundary/` | `magicsquare.boundary.*` |
+| Dual-Track | `tests/boundary/` | `src/boundary/` | `boundary.input_validator` |
+
+- [ ] `pyproject.toml` `pythonpath = ["src", "."]` 확인
+- [ ] Dual-Track pytest는 **ECB와 분리** 실행 (`tests/boundary/` vs `tests/unit/boundary/`)
+- [ ] collection 시 `ModuleNotFoundError: boundary.*` → 해당 Wave 구현 스켈레ton 추가
+- [ ] `tests/boundary/` 디렉터리가 `boundary` **패키지로 shadowing**되지 않는지 import smoke 확인
+
+```powershell
+# Dual-Track import smoke
+python -c "from boundary.input_validator import InputValidator; print(InputValidator)"
+
+# Dual-Track 테스트만 (ECB와 분리)
+python -m pytest tests/boundary/ -v
+```
+
+---
+
+### Wave D1 — U-IN-01 계열 (`InputValidator` null / size)
+
+**구현:** `src/boundary/input_validator.py`, `src/boundary/schemas.py`  
+**GREEN 시점:** `grid is None` → `FailureResponse(type="ERROR", code="INVALID_SIZE", message="Grid must be 4x4.")`
+
+> `tests/boundary/test_ac_fr_01_01_*.py`가 없으면 **RED(assert Full) 먼저** 작성 후 GREEN.
+
+- [ ] **D1-RED** `tests/boundary/test_ac_fr_01_01_input_validation.py` + `ac_fr_01_01_constants.py` (없을 경우)
+- [ ] **D1-GREEN** `InputValidator.validate(None)` — INVALID_SIZE 분기
+- [ ] **D1-GREEN** `FailureResponse` 스키마 (`type`, `code`, `message`)
+- [ ] **D1-VERIFY** `TestNormalFailureReturn::test_none_grid_returns_failure_with_invalid_size_code` passed
+- [ ] **D1-COMMIT** `green(dual-track): InputValidator null → INVALID_SIZE`
+
+---
+
+### Wave D2 — U-IN-02 (`InputValidator` size 분기)
+
+**구현:** `InputValidator.validate()` — `[]`, `[[]]*4`, 3×4, 4×3, 5×5 등 size 위반  
+**테스트:** ECB와 동일 시나리오는 `tests/unit/boundary/`(Report/06); Dual-Track 전용 assert는 RED 추가 후 GREEN
+
+- [ ] **D2-GREEN** `grid=[]` → INVALID_SIZE
+- [ ] **D2-GREEN** `grid=[[]]*4` (4×0) → INVALID_SIZE
+- [ ] **D2-GREEN** 3×4 행렬 → INVALID_SIZE
+- [ ] **D2-GREEN** (선택) 4×3, 5×5 — RED 추가 시에만
+- [ ] **D2-VERIFY** ECB C2~C5 회귀 + Dual-Track size assert (있을 경우)
+- [ ] **D2-COMMIT** `green(dual-track): InputValidator size validation`
+
+> U-IN-02a~d는 Report/09 기준 Report/06 ECB RED에 포함. Dual-Track `test_u_in.py`에는 **U-IN-04~08만** 존재.
+
+---
+
+### Wave D3 — U-IN-03~08 (`test_u_in.py`, AC-FR-01-02~04)
+
+**구현:** 빈칸 개수 → E002, 값 범위 → E004, non-zero 중복 → E005 (Report/07 워크숍 계약)  
+**전제:** 스켈레ton `pytest.fail` → assert로 **교체**(RED Full) 후 GREEN
+
+- [ ] **D3-RED** `test_u_in_03` (빈칸 0개, G0) — assert 추가 (현재 스켈레ton 미포함)
+- [ ] **D3-RED→GREEN** `test_u_in_04_blank_count_three_returns_e002`
+- [ ] **D3-RED→GREEN** `test_u_in_05_negative_value_returns_e004`
+- [ ] **D3-RED→GREEN** `test_u_in_06_value_seventeen_returns_e004`
+- [ ] **D3-RED→GREEN** `test_u_in_07_nonzero_duplicate_returns_e005`
+- [ ] **D3-RED→GREEN** `test_u_in_08_blank_count_one_returns_e002`
+- [ ] **D3-VERIFY** `python -m pytest tests/boundary/test_u_in.py -v` → 전부 passed
+- [ ] **D3-COMMIT** `green(dual-track): InputValidator blank/range/duplicate`
+
+---
+
+### Wave D4 — U-FLOW-02 (`test_u_flow.py`, execute 격리)
+
+**구현:** `src/boundary/ui_boundary.py` — invalid 입력 시 `execute` **0회**  
+**AC:** AC-FR-01-05 (Domain resolver 미호출)
+
+- [ ] **D4-RED→GREEN** `test_u_flow_02_null_matrix_execute_not_called`
+- [ ] **D4-RED→GREEN** `test_u_flow_02_invalid_size_execute_not_called`
+- [ ] **D4-RED→GREEN** `test_u_flow_02_blank_count_invalid_execute_not_called`
+- [ ] **D4-VERIFY** `python -m pytest tests/boundary/test_u_flow.py -v` → 3 passed
+- [ ] **D4-COMMIT** `green(dual-track): UIBoundary invalid → execute×0`
+
+---
+
+### Wave D5 — U-OUT (`test_u_out.py`, FR-05 출력 계약)
+
+**구현:** `UIBoundary.solve()` — 성공 payload `int[6]`, 1-index 좌표  
+**전제:** Control/Entity mock 또는 stub (U-OUT은 execute 결과 포맷 검증)
+
+- [ ] **D5-RED→GREEN** `test_u_out_01_success_payload_length_six`
+- [ ] **D5-RED→GREEN** `test_u_out_02_one_indexed_coordinates`
+- [ ] **D5-RED→GREEN** `test_u_out_03_exact_success_tuple_g1` → `[2,2,7,3,3,10]`
+- [ ] **D5-VERIFY** `python -m pytest tests/boundary/test_u_out.py -v` → 3 passed
+- [ ] **D5-COMMIT** `green(dual-track): UIBoundary success payload contract`
+
+---
+
+### Wave D6 — Track B Logic (`tests/entity/`, 별도 Wave)
+
+Report/09 RED Skeleton 15건. ECB·Dual-Track Track A GREEN 후 진행 권장.
+
+- [ ] **D6** D-LOC-01 `find_blank_coords` (G1)
+- [ ] **D6** D-MIS-01 `find_not_exist_nums` (G1)
+- [ ] **D6** D-VAL-01~06 `is_magic_square` (G0, I-04~I-08)
+- [ ] **D6** D-SOL-01~04 `solution` (G1~G3; G2/G3 fixture TBD)
+- [ ] **D6-VERIFY** `python -m pytest tests/entity/ -v`
+
+---
+
+### Dual-Track Track A 전체 완료 체크
+
+- [ ] `python -m pytest tests/boundary/ -v` → 11 passed (U-IN-04~08 + U-OUT + U-FLOW)
+- [ ] ECB 30건 회귀 유지 (`tests/unit/boundary/` + `tests/unit/control/`)
+- [ ] [defect_list.md](./defect_list.md) DEF-001~003 Close 및 커버리지 재측정 (DEF-004)
 
 ---
 
@@ -212,3 +519,5 @@ flowchart LR
 | 버전 | 일자 | 내용 |
 |------|------|------|
 | 1.0 | 2026-05-28 | 프로젝트 README 초안 (STEP 1~5 기반) |
+| 1.1 | 2026-05-29 | RED 완료·GREEN Wave 0 커밋 묶음(C0~C6) 상세, Dual-Track Wave D1~D6 정리 |
+| 1.2 | 2026-05-29 | GREEN Wave 0 완료 — C1~C6·ECB 30 passed·DEF-001~003 Close |
