@@ -77,10 +77,13 @@ D2가 깨지면 D3만으로 「유효」라고 하지 않습니다.
 | 항목 | 상태 |
 |------|------|
 | 문제 정의 (STEP 1~5) | ✅ 완료 |
-| Must / Should / Won’t | ⏳ 예정 |
-| 유·무효 대표 예시 표 | ⏳ 예정 |
-| 입출력 계약 초안 | ⏳ 예정 |
-| 구현·테스트 코드 | ❌ 아직 없음 |
+| TDD 설계 (Report 02) | ✅ 완료 |
+| Must / Should / Won’t | ✅ Report 02 |
+| 유·무효 대표 예시 표 | ✅ Report 02 |
+| 입출력 계약 초안 | ✅ Report 02 |
+| 구현 기반 (Report 03) | ✅ 완료 |
+| `.cursorrules` · ECB 골격 · User entity | ✅ 완료 |
+| Grid 검증기 (Report 02 Wave) | ❌ 미착수 |
 
 ---
 
@@ -89,11 +92,21 @@ D2가 깨지면 D3만으로 「유효」라고 하지 않습니다.
 ```
 MagicSquare_XX/
 ├── README.md                 ← 이 파일 (프로젝트 개요)
-├── Report/                   ← 문제 정의 보고서
+├── .cursorrules              ← Cursor AI 규칙 (YAML)
+├── pyproject.toml
+├── src/magicsquare/          ← ECB (entity·control·boundary)
+├── tests/
+├── Report/                   ← 문제 정의·TDD 설계·구현 기반 보고서
 │   ├── README.md
-│   └── 01. MagicSquare_Problem-Definition-Report.md
-└── Prompting/                ← 문제 정의 워크숍 프롬프트·대화 기록
-    └── 01. cursor_4x4_magic_square_problem_definit-Prompt.md
+│   ├── 01. MagicSquare_Problem-Definition-Report.md
+│   ├── 02. MagicSquare_TDD-Design-Report.md
+│   ├── 03. MagicSquare_Implementation-Setup-Report.md
+│   └── 04. MagicSquare_Cursor-Rules-Modularization-Report.md
+└── Prompting/                ← 워크숍 프롬프트·대화 기록
+    ├── 01. cursor_4x4_magic_square_problem_definit-Prompt.md
+    ├── 02. cursor_4x4_magic_square_tdd_design-Prompt.md
+    ├── 03. cursor_magicsquare_cursorrules_ecb_user-Prompt.md
+    └── 04. cursor_magicsquare_cursor-rules_modularization-Prompt.md
 ```
 
 ---
@@ -103,8 +116,14 @@ MagicSquare_XX/
 | 문서 | 설명 |
 |------|------|
 | [Report/01. MagicSquare_Problem-Definition-Report.md](./Report/01.%20MagicSquare_Problem-Definition-Report.md) | STEP 1~5 통합 보고서 (관찰, Why #1~#3, 진짜 문제 정의, Invariant) |
+| [Report/02. MagicSquare_TDD-Design-Report.md](./Report/02.%20MagicSquare_TDD-Design-Report.md) | TDD 설계 (범위, I/O, 오라클, Wave, 회귀) |
+| [Report/03. MagicSquare_Implementation-Setup-Report.md](./Report/03.%20MagicSquare_Implementation-Setup-Report.md) | 구현 기반 (`.cursorrules`, ECB, User entity) |
+| [Report/04. MagicSquare_Cursor-Rules-Modularization-Report.md](./Report/04.%20MagicSquare_Cursor-Rules-Modularization-Report.md) | `.cursor/rules/*.mdc` 규칙 모듈화 및 적용 보고 |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
-| [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화보내기 |
+| [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화 기록 |
+| [Prompting/02. cursor_4x4_magic_square_tdd_design-Prompt.md](./Prompting/02.%20cursor_4x4_magic_square_tdd_design-Prompt.md) | TDD 설계 프롬프트·대화 기록 |
+| [Prompting/03. cursor_magicsquare_cursorrules_ecb_user-Prompt.md](./Prompting/03.%20cursor_magicsquare_cursorrules_ecb_user-Prompt.md) | Cursor 규칙·ECB User 프롬프트·대화 기록 |
+| [Prompting/04. cursor_magicsquare_cursor-rules_modularization-Prompt.md](./Prompting/04.%20cursor_magicsquare_cursor-rules_modularization-Prompt.md) | Cursor rules 분할 생성·작성 대화 기록 |
 
 보고서에는 **구현 설계, 코드, 알고리즘**을 포함하지 않습니다.
 
@@ -130,10 +149,9 @@ flowchart LR
 
 ## 다음 단계 (권장)
 
-1. 이해관계자·**Must / Should / Won’t** 정리  
-2. 유효·무효 **대표 예시 표** (판정 기대 포함)  
-3. **입출력 계약** 초안 (완성 격자 only vs 부분 입력)  
-4. 1차 TDD 범위 결정 (**검증기 only** 여부)  
+1. Report 02 **Wave 0**부터 `Grid` 검증기 TDD (entity → control → acceptance 테스트)  
+2. **failureType** Should → Must 승격 여부 결정  
+3. I-01 fixture로 SIZE Red → Green 진행  
 
 ---
 
