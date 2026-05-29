@@ -6,14 +6,21 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from entity.oracles import (
+    DT_INVALID_SIZE_CODE,
+    DT_INVALID_SIZE_MESSAGE,
+    DT_NULL_INPUT_CODE,
+    DT_NULL_INPUT_MESSAGE,
+)
+
 ERROR_RESPONSE_TYPE: str = "ERROR"
 SUCCESS_RESPONSE_TYPE: str = "SUCCESS"
 
-NULL_INPUT_CODE: str = "E003_NULL_INPUT"
-NULL_INPUT_MESSAGE: str = "Input matrix must not be null."
+NULL_INPUT_CODE: str = DT_NULL_INPUT_CODE
+NULL_INPUT_MESSAGE: str = DT_NULL_INPUT_MESSAGE
 
-INVALID_SIZE_CODE: str = "E001_INVALID_SIZE"
-INVALID_SIZE_MESSAGE: str = "Input matrix must be 4x4."
+INVALID_SIZE_CODE: str = DT_INVALID_SIZE_CODE
+INVALID_SIZE_MESSAGE: str = DT_INVALID_SIZE_MESSAGE
 
 INVALID_BLANK_COUNT_CODE: str = "E002_INVALID_BLANK_COUNT"
 INVALID_BLANK_COUNT_MESSAGE: str = "Exactly two blanks (0) are required."
@@ -29,7 +36,7 @@ UNSOLVABLE_MESSAGE: str = "No valid magic square from two fixed attempts."
 
 
 class FailureResponse(BaseModel):
-    """Standard failure envelope returned by Boundary validators."""
+    """Standard failure envelope returned by Dual-Track Boundary validators."""
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 

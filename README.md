@@ -133,6 +133,7 @@ MagicSquare_XX/
 | [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
 | [docs/architecture_stacks.md](./docs/architecture_stacks.md) | ECB vs Dual-Track 이중 스택·호출 경로·마이그레이션 |
+| [docs/error_contracts.md](./docs/error_contracts.md) | ECB vs Dual-Track 오류 코드·메시지 SSOT (C-03) |
 | [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
 | [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화 기록 |
@@ -537,10 +538,10 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 3. 상수·SSOT (Constants)
 
-- [ ] **C-01** `GRID_SIZE` 이중 정의 — `magicsquare/entity/constants.py` · `entity/constants.py` → 단일 SSOT 참조
-- [ ] **C-02** INVALID_SIZE 오라클 3중 정의 — `responses.py` · `tests/constants.py` · `schemas.py` → 단일 출처, 테스트는 import만
-- [ ] **C-03** ECB vs Dual-Track 오라클 불일치 — `"INVALID_SIZE"` vs `"E001_INVALID_SIZE"`, 메시지 문구 → PRD §8.1 기준 SSOT 확정
-- [ ] **C-04** `magicsquare/entity/constants` 불완전 — ECB도 `entity/constants.py` 참조로 통일
+- [x] **C-01** `GRID_SIZE` 이중 정의 — `magicsquare/entity/constants.py` · `entity/constants.py` → 단일 SSOT 참조
+- [x] **C-02** INVALID_SIZE 오라클 3중 정의 — `responses.py` · `tests/constants.py` · `schemas.py` → 단일 출처, 테스트는 import만
+- [x] **C-03** ECB vs Dual-Track 오라클 불일치 — `"INVALID_SIZE"` vs `"E001_INVALID_SIZE"`, 메시지 문구 → PRD §8.1 기준 SSOT 확정
+- [x] **C-04** `magicsquare/entity/constants` 불완전 — ECB도 `entity/constants.py` 참조로 통일
 
 ### 4. 코드 중복 (Duplication)
 
@@ -595,3 +596,4 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 | 1.2 | 2026-05-29 | GREEN Wave 0 완료 — C1~C6·ECB 30 passed·DEF-001~003 Close |
 | 1.3 | 2026-05-29 | REFACTOR 단계 To-Do 8그룹(A~N) 체크리스트 추가 |
 | 1.4 | 2026-05-29 | REFACTOR 1번 그룹(A-01~A-06) — architecture doc, validate_size, dualtrack tests |
+| 1.5 | 2026-05-29 | REFACTOR 2번 그룹(D-01~D-03) — rules SSOT, pydantic runtime, coverage |
