@@ -6,6 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from entity.error_codes import DualTrackErrorCode
 from entity.oracles import (
     DT_INVALID_SIZE_CODE,
     DT_INVALID_SIZE_MESSAGE,
@@ -22,16 +23,16 @@ NULL_INPUT_MESSAGE: str = DT_NULL_INPUT_MESSAGE
 INVALID_SIZE_CODE: str = DT_INVALID_SIZE_CODE
 INVALID_SIZE_MESSAGE: str = DT_INVALID_SIZE_MESSAGE
 
-INVALID_BLANK_COUNT_CODE: str = "E002_INVALID_BLANK_COUNT"
+INVALID_BLANK_COUNT_CODE: str = DualTrackErrorCode.INVALID_BLANK_COUNT
 INVALID_BLANK_COUNT_MESSAGE: str = "Exactly two blanks (0) are required."
 
-INVALID_RANGE_CODE: str = "E004_INVALID_RANGE"
+INVALID_RANGE_CODE: str = DualTrackErrorCode.INVALID_RANGE
 INVALID_RANGE_MESSAGE: str = "Values must be 0 or 1..16."
 
-DUPLICATE_NONZERO_CODE: str = "E005_DUPLICATE_NONZERO"
+DUPLICATE_NONZERO_CODE: str = DualTrackErrorCode.DUPLICATE_NONZERO
 DUPLICATE_NONZERO_MESSAGE: str = "Non-zero values must be unique."
 
-UNSOLVABLE_CODE: str = "E005_UNSOLVABLE_TWO_COMBINATIONS"
+UNSOLVABLE_CODE: str = DualTrackErrorCode.UNSOLVABLE
 UNSOLVABLE_MESSAGE: str = "No valid magic square from two fixed attempts."
 
 

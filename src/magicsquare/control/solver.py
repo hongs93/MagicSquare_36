@@ -45,6 +45,9 @@ class Solver:
     def resolve(self, grid: list[list[int]] | None) -> HandleResult:
         """Run domain resolution for a size-valid grid.
 
+        C6 isolation tests spy or patch this method (I-02); inject ``validator``
+        via constructor for Boundary mocking (I-01).
+
         Args:
             grid: Size-valid 4×4 integer matrix.
 

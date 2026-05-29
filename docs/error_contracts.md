@@ -4,7 +4,7 @@
 |------|------|
 | 문서 버전 | 1.0 |
 | 작성일 | 2026-05-29 |
-| SSOT 코드 | [`src/entity/oracles.py`](../src/entity/oracles.py) |
+| SSOT 코드 | [`src/entity/oracles.py`](../src/entity/oracles.py), [`src/entity/error_codes.py`](../src/entity/error_codes.py) |
 
 ---
 

@@ -133,6 +133,7 @@ MagicSquare_XX/
 | [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
 | [docs/architecture_stacks.md](./docs/architecture_stacks.md) | ECB vs Dual-Track 이중 스택·호출 경로·마이그레이션 |
+| [docs/error_contracts.md](./docs/error_contracts.md) | ECB vs Dual-Track 오류 코드·메시지 SSOT (C-03) |
 | [docs/testing.md](./docs/testing.md) | 회귀 게이트·GM-2·커버리지 실행 가이드 (Q-01~Q-04) |
 | [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
@@ -567,15 +568,15 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 7. 의존성 주입 (Dependency Injection)
 
-- [ ] **I-01** `Solver` validator 하드코딩 — `Solver(validator: BoundaryValidator | None = None)` 생성자 DI
-- [ ] **I-02** `Solver.resolve` mock/spy — DI 후 `resolve` stub 주입으로 C6 격리 테스트 단순화
-- [ ] **I-03** `UIBoundary` DI 대칭 — ECB `Solver`에 `UIBoundary`와 동일 injectable 패턴 적용
+- [x] **I-01** `Solver` validator 하드코딩 — `Solver(validator: BoundaryValidator | None = None)` 생성자 DI
+- [x] **I-02** `Solver.resolve` mock/spy — DI 후 `resolve` stub 주입으로 C6 격리 테스트 단순화
+- [x] **I-03** `UIBoundary` DI 대칭 — ECB `Solver`에 `UIBoundary`와 동일 injectable 패턴 적용
 
 ### 8. 명명·가독성 (Naming / Readability)
 
-- [ ] **N-01** `NotImplementedError` 메시지 — `"size validation not implemented"` → FR-02+ 미구현 의미로 정확화
-- [ ] **N-02** `validate()` vs `handle()` — 레이어별 docstring에 Boundary/Control 책임 경계 명시
-- [ ] **N-03** Dual-Track 오류 코드 prefix — `E001_` … vs ECB plain `INVALID_SIZE` → naming convention 또는 `StrEnum` 도입
+- [x] **N-01** `NotImplementedError` 메시지 — `"size validation not implemented"` → FR-02+ 미구현 의미로 정확화
+- [x] **N-02** `validate()` vs `handle()` — 레이어별 docstring에 Boundary/Control 책임 경계 명시
+- [x] **N-03** Dual-Track 오류 코드 prefix — `E001_` … vs ECB plain `INVALID_SIZE` → naming convention 또는 `StrEnum` 도입
 
 ---
 
@@ -600,3 +601,5 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 | 1.6 | 2026-05-29 | REFACTOR 3번 그룹(C-01~C-04) — entity.oracles SSOT, error_contracts |
 | 1.7 | 2026-05-29 | REFACTOR 4번 그룹(R-01~R-04) — grid_validation, helpers, Solver DI |
 | 1.8 | 2026-05-29 | REFACTOR 5번 그룹(T-01~T-05) — pydantic FailureResult, EcbFailureSchema |
+| 1.9 | 2026-05-29 | REFACTOR 6번 그룹(Q-01~Q-04) — testing guide, DEF-004 close |
+| 1.10 | 2026-05-29 | REFACTOR 7~8번 그룹(I-01~N-03) — Solver DI test, error_codes StrEnum |

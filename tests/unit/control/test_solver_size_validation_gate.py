@@ -12,10 +12,9 @@ class TestDomainIsolation:
     """AC-FR-01-01, PRD §8.1 INVALID_SIZE — resolve() 격리 검증 (AC-FR-01-05)."""
 
     # AC-FR-01-01 / AC-FR-01-05
-    def test_none_grid_resolve_called_zero_times(self) -> None:
+    def test_none_grid_resolve_called_zero_times(self, solver: Solver) -> None:
         """AC-FR-01-01, PRD §8.1 INVALID_SIZE."""
         # Given
-        solver = Solver()
         grid = None
         resolve_mock = MagicMock()
 
