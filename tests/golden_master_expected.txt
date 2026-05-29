@@ -1,0 +1,44 @@
+[normal_success]
+Input:
+16 2 3 13
+5 11 10 8
+9 7 0 12
+4 14 15 0
+Output:
+[3,3,6,4,4,1]
+
+[reverse_success]
+Input:
+1 15 14 4
+8 0 11 5
+12 6 0 9
+13 3 2 16
+Output:
+[2,2,10,3,3,7]
+
+[invalid_blank_count]
+Input:
+0 2 3 13
+5 11 10 8
+9 7 0 12
+4 14 15 0
+Error:
+E002_INVALID_BLANK_COUNT
+
+[duplicate_number]
+Input:
+16 3 3 13
+5 11 10 8
+9 7 0 12
+4 14 15 0
+Error:
+E005_DUPLICATE_NONZERO
+
+[no_valid_solution]
+Input:
+1 2 3 4
+5 6 7 8
+9 10 0 12
+13 14 15 0
+Error:
+E005_UNSOLVABLE_TWO_COMBINATIONS

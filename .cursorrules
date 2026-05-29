@@ -1,0 +1,38 @@
+################################################################################
+# SSOT: Agent rules live in .cursor/rules/*.mdc (Report/04).
+# This file keeps project context only; do not duplicate code_style, architecture,
+# forbidden, or tdd_rules here — see magicsquare-*.mdc modules.
+################################################################################
+project:
+  name: MagicSquare_XX
+  language: python
+  summary: >
+    4×4 완성 격자(1~16 순열)에 대해 합의된 10선(행4·열4·주·부대각)의 합이 34인지
+    결정론적으로 판정하는 검증기. 동일 입력 → 동일 valid/invalid(및 failureType).
+  phase1_must:
+    - 완성 4×4 격자 valid / invalid 판정
+    - D1~D4 전부 검사 (순열·범위 선행 → 선 합)
+    - Report/02 §6 오라클(V-01, V-02, I-01~I-10)과 일치
+  phase1_wont:
+    - 마방진 생성, UI, 편집, 게임
+    - 부분 격자, broken diagonal, n×n 일반화
+    - 특정 배치 패턴만 valid 인정(과검증)
+  invariants:
+    D1: 항상 4×4 격자
+    D2: 값은 1..16 순열
+    D3: 검사 선 각 합 = 34 (M=34)
+    D4: 검사 선 10개 고정(행4·열4·주·부대각)
+    P1: 만족 = D1~D4 모두
+    P2: 결정성
+    P3: 순열·범위 위반 시 합이 맞아도 invalid
+  references:
+    - README.md
+    - docs/architecture_stacks.md
+    - Report/01. MagicSquare_Problem-Definition-Report.md
+    - Report/02. MagicSquare_TDD-Design-Report.md
+  rules_ssot:
+    - .cursor/rules/magicsquare-project.mdc
+    - .cursor/rules/magicsquare-ecb-architecture.mdc
+    - .cursor/rules/magicsquare-forbidden.mdc
+    - .cursor/rules/magicsquare-python-code-style.mdc
+    - .cursor/rules/magicsquare-tdd-testing.mdc

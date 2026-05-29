@@ -1,0 +1,23 @@
+---
+description: MagicSquare 금지 패턴과 대체 방식
+alwaysApply: true
+---
+
+# MagicSquare Forbidden Patterns
+
+## forbidden
+- pattern: "print() 디버깅 사용"
+  reason: 로그 제어가 어렵고 테스트 출력 노이즈를 증가시킨다.
+  alternative: "logging 모듈의 레벨 기반 로깅 사용"
+
+- pattern: "하드코딩 상수 직접 사용 (예: 34, 4, 16)"
+  reason: 의미가 불분명하고 변경 시 누락 위험이 커진다.
+  alternative: "의미 있는 상수명으로 entity/constants에 선언 후 참조"
+
+- pattern: "except: 단독 사용"
+  reason: 시스템 종료 예외까지 삼켜 버그 원인 추적이 어려워진다.
+  alternative: "except Exception as e 사용 후 로깅/재던지기, 필요 시 구체 예외 명시"
+
+- pattern: "테스트 약화 (assert 삭제, 과도한 mock, 무분별한 skip)"
+  reason: 회귀 탐지가 실패해 품질 보증이 무너진다.
+  alternative: "행위 기반 assert 유지, 필요한 범위만 mock, skip 사유 명시"

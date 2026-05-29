@@ -8,3 +8,12 @@ Desktop.ini
 .idea/
 *.swp
 *~
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+htmlcov/
+.coverage
