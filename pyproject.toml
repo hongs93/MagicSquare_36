@@ -19,3 +19,6 @@ where = ["src"]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
 addopts = "-ra"
+markers = [
+    "golden_master: GM-2 Golden Master regression (approve pattern)",
+]

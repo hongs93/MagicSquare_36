@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import pytest
+
+# Keep ``src/`` ahead of ``tests/`` so ``boundary`` resolves to production code.
+_ROOT = Path(__file__).resolve().parent.parent
+_SRC = str(_ROOT / "src")
+while _SRC in sys.path:
+    sys.path.remove(_SRC)
+sys.path.insert(0, _SRC)
 
 
 @pytest.fixture

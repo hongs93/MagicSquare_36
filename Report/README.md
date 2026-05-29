@@ -29,6 +29,7 @@
 | [10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6 커밋 묶음·최소 구현 |
 | [11. MagicSquare_AC-FR01-01-GREEN-C2-EmptyGrid-Report.md](./11.%20MagicSquare_AC-FR01-01-GREEN-C2-EmptyGrid-Report.md) | AC-FR-01-01 GREEN C2 `grid=[]` 3건 passed·회귀 확인 |
 | [12. MagicSquare_AC-FR01-01-GREEN-Wave0-Complete-Report.md](./12.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Complete-Report.md) | AC-FR-01-01 GREEN Wave 0 C1~C6 완료·30 passed·DEF Close |
+| [13. MagicSquare_Golden-Master-GM2-Complete-Report.md](./13.%20MagicSquare_Golden-Master-GM2-Complete-Report.md) | Golden Master GM-2 approve 패턴·5 TC·회귀 안전장치·README GM-3 |
 
 
 
@@ -55,6 +56,7 @@
 | 10 GREEN Wave 0 | C0~C6 커밋 묶음 · FailureResult · grid=None GREEN · README 체크리스트 | C1~C6 완료 · 30 passed · REFACTOR |
 | 11 GREEN C2 | `grid=[]` 3건 GREEN · C1 회귀 8건 · validator `not grid` 분기 | C3~C6 · 30 passed · REFACTOR |
 | 12 GREEN Wave 0 | C1~C6 완료 · ECB 30 passed · Solver · GRID_SIZE · DEF-001~003 Close | REFACTOR · Dual-Track D1 · FR-02 |
+| 13 Golden Master GM-2 | approve 패턴 · 5 TC · golden_master_expected.txt · README GM-01~10 | REFACTOR · Dual-Track GREEN |
 
 
 

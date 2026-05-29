@@ -176,6 +176,29 @@ flowchart LR
 > 이 체크리스트는 [docs/test_plan.md](./docs/test_plan.md) · [Report/06](./Report/06.%20MagicSquare_AC-FR01-01-RED-Test-Plan-Report.md) 기반입니다.  
 > ECB Full RED 30건은 `tests/unit/boundary/` + `tests/unit/control/`에 **작성 완료** — assert 수정·삭제 금지.
 
+### Golden Master 회귀 안전장치
+
+> Refactoring 시작 전 구축. GREEN 완료 후 즉시 적용.
+
+**기준 파일 생성**
+
+- GM-01: `tests/golden_master_expected.txt` 생성
+- GM-02: 정상/역순/오류 시나리오 추가
+- GM-03: `git add tests/golden_master_expected.txt`
+
+**테스트 코드**
+
+- GM-04: `test_golden_master_magic_square` 작성
+- GM-05: approve 패턴 적용
+- GM-06: Golden Master 테스트 PASS 확인
+
+**회귀 보호**
+
+- GM-07: row-major 규칙 보호
+- GM-08: 1-index 출력 보호
+- GM-09: reverse 조합 fallback 보호
+- GM-10: Error Contract 보호
+
 ### Track A — ECB Boundary / Control (Report/06, 30건)
 
 - [x] TC-A-01~07: `test_boundary_validator_size.py` (25건) — `grid=None` / `[]` / `[[]]*4` / 3×4 등
