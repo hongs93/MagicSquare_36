@@ -1,0 +1,40 @@
+---
+description: MagicSquare 프로젝트 컨텍스트, 파일 구조, AI 동작 규칙
+alwaysApply: true
+---
+
+# MagicSquare Project Rules
+
+## project
+- name: MagicSquare_XX
+- language: python
+- problem_scope: 4x4 매직스퀘어 검증 로직 중심
+- magic_constant: 34
+
+## file_structure
+```text
+# ECB 기준 권장 구조
+src/
+  magicsquare/
+    boundary/   # UI, API, CLI, 외부 입출력
+    control/    # 유스케이스/오케스트레이션
+    entity/     # 도메인 데이터/불변식/검증 규칙
+tests/
+  unit/
+  integration/
+  acceptance/
+```
+
+## ai_behavior
+### before_code
+- 코드 작성 전 관련 테스트 파일(`tests/`)을 먼저 확인한다.
+- 변경 대상이 속한 ECB 레이어를 식별하고 경계를 명시한다.
+
+### during_code
+- ECB 레이어 경계 위반(역방향 의존, 우회 호출)을 금지한다.
+- 타입힌트 없는 함수 생성을 금지한다.
+- TDD 단계와 충돌하는 변경을 감지하면 경고를 출력한다.
+
+### after_code
+- 변경에 대응하는 테스트를 작성/갱신했는지 점검한다.
+- public 함수의 docstring(Google 스타일) 누락 여부를 점검한다.
