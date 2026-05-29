@@ -133,7 +133,7 @@ MagicSquare_XX/
 | [Report/10. MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md](./Report/10.%20MagicSquare_AC-FR01-01-GREEN-Wave0-Kickoff-Report.md) | AC-FR-01-01 GREEN Wave 0 착수·C0~C6·최소 구현 보고 |
 | [docs/test_plan.md](./docs/test_plan.md) | AC-FR-01-01 상세 테스트 계획서 |
 | [docs/architecture_stacks.md](./docs/architecture_stacks.md) | ECB vs Dual-Track 이중 스택·호출 경로·마이그레이션 |
-| [docs/error_contracts.md](./docs/error_contracts.md) | ECB vs Dual-Track 오류 코드·메시지 SSOT (C-03) |
+| [docs/testing.md](./docs/testing.md) | 회귀 게이트·GM-2·커버리지 실행 가이드 (Q-01~Q-04) |
 | [defect_list.md](./defect_list.md) | RED 단계 결함 목록 (DEF-001~004) |
 | [Report/README.md](./Report/README.md) | Report 폴더 안내 |
 | [Prompting/01. cursor_4x4_magic_square_problem_definit-Prompt.md](./Prompting/01.%20cursor_4x4_magic_square_problem_definit-Prompt.md) | 문제 정의 단계 프롬프트·대화 기록 |
@@ -560,10 +560,10 @@ python -m pytest tests/unit/test_golden_master_magic_square.py -m golden_master 
 
 ### 6. 테스트·품질 (Test / Quality)
 
-- [ ] **Q-01** DEF-004 TOTAL 커버리지 — boundary+control 88%, TOTAL 90% 미달 → Wave D 이후 재측정
-- [ ] **Q-02** Golden Master vs 전체 pytest — `-m golden_master` 단독 시 Dual-Track skeleton import 오류 → GM 전용 수집 범위 분리
-- [ ] **Q-03** Dual-Track RED skeleton — `tests/dualtrack/boundary/` · `tests/dualtrack/entity/` `pytest.fail` → GREEN 시 assert 교체, REFACTOR 전 GM-2 회귀 유지
-- [ ] **Q-04** ECB 30건 assert 불변 — REFACTOR는 구현만 변경, 테스트 약화 없이 green 유지
+- [x] **Q-01** DEF-004 TOTAL 커버리지 — boundary+control 88%, TOTAL 90% 미달 → Wave D 이후 재측정
+- [x] **Q-02** Golden Master vs 전체 pytest — `-m golden_master` 단독 시 Dual-Track skeleton import 오류 → GM 전용 수집 범위 분리
+- [x] **Q-03** Dual-Track RED skeleton — `tests/dualtrack/boundary/` · `tests/dualtrack/entity/` `pytest.fail` → GREEN 시 assert 교체, REFACTOR 전 GM-2 회귀 유지
+- [x] **Q-04** ECB 30건 assert 불변 — REFACTOR는 구현만 변경, 테스트 약화 없이 green 유지
 
 ### 7. 의존성 주입 (Dependency Injection)
 

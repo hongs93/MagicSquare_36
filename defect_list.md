@@ -18,7 +18,7 @@
 | Critical | 3 |
 | High | 0 |
 | Medium | 1 |
-| **합계 (Open)** | **0** (DEF-004 Partial) |
+| **합계 (Open)** | **0** |
 | 수집된 테스트 | 30 / 30 |
 | 마지막 실행 명령 | `python -m pytest tests/unit/boundary/ tests/unit/control/ -v --cov=src --cov-report=term-missing` |
 
@@ -44,7 +44,7 @@ DEF-001~003 **Closed**. DEF-004 Partial Close (boundary+control 88%).
 | DEF-001 | Critical | AC-FR-01-01 | 1. `.venv` 활성화<br>2. `python -m pytest tests/unit/boundary/test_boundary_validator_size.py -v`<br>3. 수집 단계에서 `FailureResult` import 확인 | `from magicsquare.boundary.responses import FailureResult` 성공 | ~~`ModuleNotFoundError`~~ | `src/magicsquare/boundary/responses.py` 미구현 | **Closed** — `FailureResult` 구현 (Wave 0 C0) |
 | DEF-002 | Critical | AC-FR-01-01 | 1. DEF-001 해결 후 동일 명령 실행<br>2. `BoundaryValidator` import 및 size-invalid 호출 | `validator.validate(...)` → `INVALID_SIZE`, 예외 없음 | ~~`ModuleNotFoundError` / `NotImplementedError`~~ | `validator.py` 미구현 | **Closed** — None·[]·4×0·3×4 분기 (Wave 0 C1~C5) |
 | DEF-003 | Critical | AC-FR-01-01, AC-FR-01-05 | 1. `python -m pytest tests/unit/control/test_solver_size_validation_gate.py -v`<br>2. `Solver` import 확인 | `handle(None)` 시 `resolve()` 0회 | ~~`ModuleNotFoundError`~~ | `solver.py` 미구현 | **Closed** — `Solver.handle` + Boundary 게이트 (Wave 0 C6) |
-| DEF-004 | Medium | AC-FR-01-01 | 1. `python -m pytest tests/unit/boundary/ tests/unit/control/ --cov=src --cov-report=term-missing`<br>2. 출력 맨 아래 coverage 표 확인 | `term-missing` 커버리지 표 출력 (Boundary ≥85% 목표 측정 가능) | ~~`collected 0 items`~~ | DEF-001~003으로 수집 중단 | **Partial Close** — 30 passed, boundary+control 88%; TOTAL 90%는 후속 |
+| DEF-004 | Medium | AC-FR-01-01 | 1. `python -m pytest tests/unit/boundary/ tests/unit/control/ --cov=src --cov-report=term-missing`<br>2. 출력 맨 아래 coverage 표 확인 | `term-missing` 커버리지 표 출력 (Boundary ≥85% 목표 측정 가능) | ~~`collected 0 items`~~ | DEF-001~003으로 수집 중단 | **Closed** — TOTAL **93%** (2026-05-29 REFACTOR Q-01); Domain validator 76%는 Wave D6 |
 
 ---
 
